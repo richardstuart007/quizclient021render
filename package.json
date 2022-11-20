@@ -1,6 +1,7 @@
 {
   "name": "quizclient021render",
-  "homepage": ".",
+  "homepage": "http://.",
+  "description": "Quiz Client",
   "version": "1.21.1",
   "private": true,
   "dependencies": {
@@ -54,5 +55,11 @@
   "devDependencies": {
     "eslint-plugin-react-hooks": "^4.3.0"
   },
-  "description": ""
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardstuart007/quizclient021render.git"
+  },
+  "bugs": {
+    "url": "https://github.com/richardstuart007/quizclient021render/issues"
+  }
 }
