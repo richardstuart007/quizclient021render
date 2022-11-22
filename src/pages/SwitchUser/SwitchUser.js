@@ -25,7 +25,7 @@ import useMyTable from '../../components/controls/useMyTable'
 //  Services
 //
 import MyQueryPromise from '../../services/MyQueryPromise'
-import getTable from '../../services/getTable'
+import rowCrud from '../../services/rowCrud'
 //
 //  Debug Settings
 //
@@ -58,6 +58,8 @@ const useStyles = makeStyles(theme => ({
 //  Table Heading
 //
 const headCells = [
+  { id: 'u_id', label: 'ID' },
+  { id: 'u_user', label: 'User' },
   { id: 'u_email', label: 'Email' },
   { id: 'u_name', label: 'Name' },
   { id: 'u_fedid', label: 'Bridge ID' },
@@ -68,6 +70,8 @@ const headCells = [
 ]
 const searchTypeOptions = [
   { id: 'u_email', title: 'Email' },
+  { id: 'u_user', title: 'User' },
+  { id: 'u_id', title: 'ID' },
   { id: 'u_name', title: 'Name' },
   { id: 'u_fedid', title: 'Bridge ID' }
 ]
@@ -100,7 +104,7 @@ export default function SwitchUser({ handlePage }) {
       return items
     }
   })
-  const [searchType, setSearchType] = useState('u_email')
+  const [searchType, setSearchType] = useState('u_name')
   const [searchValue, setSearchValue] = useState('')
   //
   //  Initial Data Load
@@ -126,18 +130,19 @@ export default function SwitchUser({ handlePage }) {
     //
     //  Selection
     //
-    const sqlString = `* from users order by u_email`
+    const sqlString = `* from users order by u_id`
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
     //
-    const getTableparams = {
+    const rowCrudparams = {
+      axiosMethod: 'post',
       sqlCaller: functionName,
       sqlTable: 'users',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    var myPromiseGet = MyQueryPromise(getTable(getTableparams))
+    var myPromiseGet = MyQueryPromise(rowCrud(rowCrudparams))
     //
     //  Resolve Status
     //
@@ -183,6 +188,14 @@ export default function SwitchUser({ handlePage }) {
             itemsFilter = items.filter(x =>
               x.u_name.toLowerCase().includes(searchValue.toLowerCase())
             )
+            break
+          case 'u_user':
+            itemsFilter = items.filter(x =>
+              x.u_user.toLowerCase().includes(searchValue.toLowerCase())
+            )
+            break
+          case 'u_id':
+            itemsFilter = items.filter(x => x.u_id === parseInt(searchValue))
             break
           case 'u_fedid':
             itemsFilter = items.filter(x =>
@@ -265,7 +278,9 @@ export default function SwitchUser({ handlePage }) {
           <TblHead />
           <TableBody>
             {recordsAfterPagingAndSorting().map(row => (
-              <TableRow key={row.u_email}>
+              <TableRow key={row.u_id}>
+                <TableCell>{row.u_id}</TableCell>
+                <TableCell>{row.u_user}</TableCell>
                 <TableCell>{row.u_email}</TableCell>
                 <TableCell>{row.u_name}</TableCell>
                 <TableCell>{row.u_fedid}</TableCell>

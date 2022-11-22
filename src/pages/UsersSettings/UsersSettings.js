@@ -19,12 +19,13 @@ import { useMyForm, MyForm } from '../../components/controls/useMyForm'
 //  Services
 //
 import MyQueryPromise from '../../services/MyQueryPromise'
-import rowUpdate from '../../services/rowUpdate'
+import rowCrud from '../../services/rowCrud'
 //
 //  Form Initial Values
 //
 const initialFValues = {
   u_name: '',
+  u_email: '',
   u_showprogress: true,
   u_showscore: true,
   u_sortquestions: true,
@@ -86,6 +87,12 @@ export default function UsersSettings({ handlePage }) {
     if ('u_name' in fieldValues)
       errorsUpd.u_name = fieldValues.u_name === '' ? 'This field is required.' : ''
     //
+    //  email
+    //
+    if ('email' in fieldValues) {
+      errorsUpd.u_email = validateEmail(fieldValues.u_email) ? '' : 'Email is not a valid format'
+    }
+    //
     //  MaxQuestions
     //
     if ('u_dftmaxquestions' in fieldValues)
@@ -105,6 +112,14 @@ export default function UsersSettings({ handlePage }) {
     if (fieldValues === values) {
       return Object.values(errorsUpd).every(x => x === '')
     }
+  }
+  //...................................................................................
+  function validateEmail(email) {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
   }
   //...................................................................................
   //
@@ -152,19 +167,17 @@ export default function UsersSettings({ handlePage }) {
     //
     if (debugLog) console.log('updateRowData Row ', data)
     //
-    //  Populate Props
-    //
-    const props = {
-      sqlTable: 'users',
-      sqlWhere: `u_email = '${data.u_email}'`,
-      sqlRow: data
-    }
-    if (debugLog) console.log('sqlWhere', props.sqlWhere)
-    if (debugLog) console.log('sqlRow', props.sqlRow)
-    //
     //  Process promise
     //
-    const myPromiseUpdate = MyQueryPromise(rowUpdate(props))
+    const rowCrudparams = {
+      axiosMethod: 'post',
+      sqlCaller: debugModule,
+      sqlTable: 'users',
+      sqlAction: 'UPDATE',
+      sqlWhere: `u_user = '${data.u_user}'`,
+      sqlRow: data
+    }
+    const myPromiseUpdate = MyQueryPromise(rowCrud(rowCrudparams))
     //
     //  Resolve Status
     //
@@ -178,10 +191,10 @@ export default function UsersSettings({ handlePage }) {
         throw Error
       } else {
         //
-        //  Get u_email
+        //  Get u_user
         //
-        const rtn_u_email = data[0].u_email
-        if (debugLog) console.log(`Row (${rtn_u_email}) UPDATED in Database`)
+        const rtn_u_user = data[0].u_user
+        if (debugLog) console.log(`Row (${rtn_u_user}) UPDATED in Database`)
       }
       return
     })
@@ -217,6 +230,17 @@ export default function UsersSettings({ handlePage }) {
                 value={values.u_name}
                 onChange={handleInputChange}
                 error={errors.u_name}
+                sx={{ minWidth: '300px' }}
+              />
+            </Grid>
+            {/*------------------------------------------------------------------------------ */}
+            <Grid item xs={12}>
+              <MyInput
+                name='u_email'
+                label='Email'
+                value={values.u_email}
+                onChange={handleInputChange}
+                error={errors.u_email}
                 sx={{ minWidth: '300px' }}
               />
             </Grid>

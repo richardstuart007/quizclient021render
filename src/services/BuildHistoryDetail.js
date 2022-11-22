@@ -6,7 +6,7 @@ import debugSettings from '../debug/debugSettings'
 //  Services
 //
 import MyQueryPromise from './MyQueryPromise'
-import getTable from './getTable'
+import rowCrud from './rowCrud'
 //
 //  Constants
 //
@@ -61,13 +61,14 @@ export default function BuildHistoryDetail(row) {
     //
     //  Process promise
     //
-    const getTableparams = {
+    const rowCrudparams = {
+      axiosMethod: 'post',
       sqlCaller: functionName,
       sqlTable: 'questions',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseQuestions = MyQueryPromise(getTable(getTableparams))
+    const myPromiseQuestions = MyQueryPromise(rowCrud(rowCrudparams))
     //
     //  Resolve Status
     //
@@ -189,13 +190,14 @@ export default function BuildHistoryDetail(row) {
     //
     //  Process promise
     //
-    const getTableparams = {
+    const rowCrudparams = {
+      axiosMethod: 'post',
       sqlCaller: functionName,
       sqlTable: 'reflinks',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseReflinks = MyQueryPromise(getTable(getTableparams))
+    const myPromiseReflinks = MyQueryPromise(rowCrud(rowCrudparams))
     //
     //  Resolve Status
     //

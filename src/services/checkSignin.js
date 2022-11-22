@@ -27,7 +27,7 @@ export default async function checkSignin(props) {
   //
   //  Deconstruct props
   //
-  const { sqlCaller, email, password } = props
+  const { sqlCaller, user, password } = props
   let sqlClient = `${functionName}/${sqlCaller}`
   //
   //  Get the URL
@@ -37,11 +37,8 @@ export default async function checkSignin(props) {
   //
   // Fetch the data
   //
-  const promise = fetchItems()
-  //
-  // Return promise
-  //
-  return promise
+  const rtnObj = fetchItems()
+  return rtnObj
   //--------------------------------------------------------------------
   //.  fetch data
   //--------------------------------------------------------------------
@@ -53,7 +50,7 @@ export default async function checkSignin(props) {
       const method = 'post'
       let body = {
         sqlClient: sqlClient,
-        email: email,
+        user: user,
         password: password
       }
       const URL = App_Settings_URL + URL_SIGNIN
@@ -61,20 +58,9 @@ export default async function checkSignin(props) {
       //
       //  SQL database
       //
-      let resultData = []
-      resultData = await apiAxios(method, URL, body)
-      //
-      // No data
-      //
-      if (!resultData || !resultData[0]) {
-        console.log(`No data received: sqlClient(${sqlClient}) Email(${email}) Table(userspwd)`)
-        return []
-      }
-      //
-      // Return data
-      //
-      if (debugLog) console.log('Return Data', resultData)
-      return resultData[0]
+      const rtnObj = await apiAxios(method, URL, body)
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      return rtnObj
       //
       // Errors
       //

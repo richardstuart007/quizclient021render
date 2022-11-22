@@ -24,7 +24,7 @@ import MyActionButton from '../../components/controls/MyActionButton'
 //  Services
 //
 import MyQueryPromise from '../../services/MyQueryPromise'
-import getTable from '../../services/getTable'
+import rowCrud from '../../services/rowCrud'
 import BuildQuizData from '../../services/BuildQuizData'
 import BuildHistoryDetail from '../../services/BuildHistoryDetail'
 //
@@ -146,9 +146,8 @@ export default function QuizHistory({ handlePage }) {
   //  Get User
   //
   const User_Settings_User = JSON.parse(sessionStorage.getItem('User_Settings_User'))
-  const name = User_Settings_User.u_name
-  const email = User_Settings_User.u_email
-  const uid = User_Settings_User.u_id
+  const u_name = User_Settings_User.u_name
+  const u_id = User_Settings_User.u_id
   //
   //  Default if not signed in
   //
@@ -218,22 +217,23 @@ export default function QuizHistory({ handlePage }) {
     //
     //  Selection
     //
-    let sqlString = `r_id, r_email, r_datetime, r_owner, r_group1, g1title, r_qid, r_ans, r_questions, r_correct, 100 * r_correct/r_questions as r_percent`
+    let sqlString = `r_id, r_uid, r_datetime, r_owner, r_group1, g1title, r_qid, r_ans, r_questions, r_correct, 100 * r_correct/r_questions as r_percent`
     sqlString = sqlString + ` from usershistory`
     sqlString = sqlString + ` join group1 on r_group1 = g1id`
-    if (!User_Admin) sqlString = sqlString + ` where r_email='${email}'`
+    if (!User_Admin) sqlString = sqlString + ` where r_uid='${u_id}'`
     sqlString = sqlString + ` order by r_id desc`
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
     //
-    const getTableparams = {
+    const rowCrudparams = {
+      axiosMethod: 'post',
       sqlCaller: functionName,
       sqlTable: 'usershistory',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseusershistory = MyQueryPromise(getTable(getTableparams))
+    const myPromiseusershistory = MyQueryPromise(rowCrud(rowCrudparams))
     //
     //  Resolve Status
     //
@@ -407,7 +407,7 @@ export default function QuizHistory({ handlePage }) {
     //
     //  Subtitle
     //
-    g_allUsers ? setSubtitle('ALL USERS') : setSubtitle(`${name} (${uid})`)
+    g_allUsers ? setSubtitle('ALL USERS') : setSubtitle(`${u_name} (${u_id})`)
     //
     //  Filter
     //
@@ -415,24 +415,24 @@ export default function QuizHistory({ handlePage }) {
       fn: items => {
         if (debugLog) console.log('searchValue ', searchValue)
         if (debugLog) console.log('searchType ', searchType)
-        if (debugLog) console.log('email ', email)
+        if (debugLog) console.log('u_id ', u_id)
         //
-        //  Filter by email ?
+        //  Filter by user ?
         //
-        let emailFilter = items
-        if (debugLog) console.log('emailFilter ', emailFilter)
+        let userFilter = items
+        if (debugLog) console.log('userFilter ', userFilter)
         if (debugLog) console.log('g_allUsers ', g_allUsers)
         if (!g_allUsers) {
-          if (debugLog) console.log('Filter by email ')
-          emailFilter = items.filter(x => x.r_email === email)
+          if (debugLog) console.log('Filter by user ')
+          userFilter = items.filter(x => x.r_uid === u_id)
         }
-        if (debugLog) console.log('emailFilter ', emailFilter)
+        if (debugLog) console.log('userFilter ', userFilter)
         //
         //  Nothing to search, return rows
         //
         if (searchValue === '') {
-          if (debugLog) console.log('setFilterFn emailFilter ', emailFilter)
-          return emailFilter
+          if (debugLog) console.log('setFilterFn userFilter ', userFilter)
+          return userFilter
         }
         //
         //  Numeric
@@ -442,22 +442,22 @@ export default function QuizHistory({ handlePage }) {
         //
         //  Filter
         //
-        let itemsFilter = emailFilter
+        let itemsFilter = userFilter
         if (debugLog) console.log('itemsFilter ', itemsFilter)
         switch (searchType) {
           case 'r_id':
-            itemsFilter = emailFilter.filter(x => x.r_id === searchValueInt)
+            itemsFilter = userFilter.filter(x => x.r_id === searchValueInt)
             break
           case 'yymmdd':
-            itemsFilter = emailFilter.filter(x => x.yymmdd === searchValue)
+            itemsFilter = userFilter.filter(x => x.yymmdd === searchValue)
             break
           case 'r_owner':
-            itemsFilter = emailFilter.filter(x =>
+            itemsFilter = userFilter.filter(x =>
               x.r_owner.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
           case 'g1title':
-            itemsFilter = emailFilter.filter(x =>
+            itemsFilter = userFilter.filter(x =>
               x.g1title.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
@@ -488,7 +488,7 @@ export default function QuizHistory({ handlePage }) {
     //
     //  Subtitle
     //
-    g_allUsers ? setSubtitle('ALL USERS') : setSubtitle(`${name} (${uid})`)
+    g_allUsers ? setSubtitle('ALL USERS') : setSubtitle(`${u_name} (${u_id})`)
   }
   //...................................................................................
   //.  Render the form

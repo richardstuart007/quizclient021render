@@ -1,7 +1,7 @@
 //
 //  Utilities
 //
-import rowUpsert from './rowUpsert'
+import rowCrud from './rowCrud'
 import MyQueryPromise from './MyQueryPromise'
 //
 //  Debug Settings
@@ -11,8 +11,10 @@ import debugSettings from '../debug/debugSettings'
 // Debug Settings
 //
 const debugLog = debugSettings()
+
+const functionName = 'writeHistory'
 //===================================================================================
-function writeHistory() {
+export default function writeHistory() {
   //
   //  Answers
   //
@@ -68,23 +70,22 @@ function writeHistory() {
     r_qid: r_qid,
     r_ans: r_ans
   }
-  //
-  //  Data
-  //
   if (debugLog) console.log('sqlRow ', sqlRow)
   //
   //  Build Props
   //
   const props = {
+    sqlCaller: functionName,
+    axiosMethod: 'post',
+    sqlAction: 'INSERT',
     sqlTable: 'usershistory',
-    sqlKeyName: ['r_email', 'r_datetime'],
     sqlRow: sqlRow
   }
   //
   //  Process promise
   //
-  if (debugLog) console.log('rowUpsert')
-  const myPromiseInsert = MyQueryPromise(rowUpsert(props))
+  if (debugLog) console.log('rowCrud')
+  const myPromiseInsert = MyQueryPromise(rowCrud(props))
   //
   //  Resolve Status
   //
@@ -110,5 +111,3 @@ function writeHistory() {
   //
   return myPromiseInsert
 }
-
-export default writeHistory

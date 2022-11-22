@@ -21,7 +21,7 @@ const debugLog = debugSettings()
 //--------------------------------------------------------------------
 //-  Main Line
 //--------------------------------------------------------------------
-export default async function registerUser(props, { setForm_message }) {
+export default async function registerUser(props) {
   if (debugLog) console.log('Start registerUser')
   if (debugLog) console.log('props ', props)
   //
@@ -29,6 +29,7 @@ export default async function registerUser(props, { setForm_message }) {
   //
   const {
     sqlCaller,
+    user,
     email,
     password,
     name,
@@ -51,16 +52,12 @@ export default async function registerUser(props, { setForm_message }) {
   //
   // Fetch the data
   //
-  const promise = fetchItems({ setForm_message })
-  //
-  // Return promise
-  //
-  if (debugLog) console.log('Return Promise', promise)
-  return promise
+  const rtnObj = fetchItems()
+  return rtnObj
   //--------------------------------------------------------------------
   //.  fetch data
   //--------------------------------------------------------------------
-  async function fetchItems({ setForm_message }) {
+  async function fetchItems() {
     try {
       //
       //  Setup actions
@@ -68,6 +65,7 @@ export default async function registerUser(props, { setForm_message }) {
       const method = 'post'
       let body = {
         sqlClient: sqlClient,
+        user: user,
         email: email,
         password: password,
         name: name,
@@ -86,27 +84,15 @@ export default async function registerUser(props, { setForm_message }) {
       //
       //  SQL database
       //
-      const data = await apiAxios(method, URL, body)
-      if (debugLog) console.log('Data ', data)
-      //
-      // No data
-      //
-      if (!data) {
-        const message = data
-        setForm_message('Error Registering Email')
-        console.log(message)
-        return null
-      }
-      //
-      //  Data found
-      //
-      return data[0]
+      const resultData = await apiAxios(method, URL, body)
+      if (debugLog) console.log('resultData ', resultData)
+      return resultData
       //
       // Errors
       //
     } catch (err) {
-      setForm_message('Error Registering Email')
-      return null
+      console.log(err)
+      return []
     }
   }
   //--------------------------------------------------------------------

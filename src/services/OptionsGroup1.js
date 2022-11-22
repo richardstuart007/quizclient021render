@@ -6,7 +6,7 @@ import debugSettings from '../debug/debugSettings'
 //  Services
 //
 import MyQueryPromise from './MyQueryPromise'
-import rowSelect from './rowSelect'
+import rowCrud from './rowCrud'
 //
 // Debug Settings
 //
@@ -21,10 +21,16 @@ export default function OptionsGroup1() {
   //
   //  Process promise
   //
-  const props = {
-    sqlTable: 'group1'
+  const sqlTable = 'group1'
+  const sqlString = `* from ${sqlTable}`
+  const rowCrudparams = {
+    axiosMethod: 'post',
+    sqlCaller: debugModule,
+    sqlTable: sqlTable,
+    sqlAction: 'SELECTSQL',
+    sqlString: sqlString
   }
-  const myPromiseGet = MyQueryPromise(rowSelect(props))
+  const myPromiseGet = MyQueryPromise(rowCrud(rowCrudparams))
   //
   //  Resolve Status
   //
@@ -38,14 +44,12 @@ export default function OptionsGroup1() {
     if (data[0]) {
       LoadOptions(data)
     }
-
     return
   })
   //
   //  Return Promise
   //
   return myPromiseGet
-
   //...................................................................................
   //.  Load Options
   //...................................................................................

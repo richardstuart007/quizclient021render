@@ -7,7 +7,7 @@ import debugSettings from '../debug/debugSettings'
 //
 import MyQueryPromise from './MyQueryPromise'
 import BuildOptionsGroup3 from './BuildOptionsGroup3'
-import getTable from './getTable'
+import rowCrud from './rowCrud'
 //
 //  Constants
 //
@@ -27,14 +27,15 @@ export default function GetBuildOptionsGroup3() {
   //
   //  Process promise
   //
-  const getTableparams = {
+  const rowCrudparams = {
+    axiosMethod: 'post',
     sqlCaller: functionName,
     sqlTable: 'group3',
     sqlAction: 'SELECT',
     sqlWhere: '',
     sqlOrderByRaw: 'g3id'
   }
-  const myPromiseGroup3 = MyQueryPromise(getTable(getTableparams))
+  const myPromiseGroup3 = MyQueryPromise(rowCrud(rowCrudparams))
   //
   //  Resolve Status
   //

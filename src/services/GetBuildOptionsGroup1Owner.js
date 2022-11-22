@@ -7,7 +7,7 @@ import debugSettings from '../debug/debugSettings'
 //
 import MyQueryPromise from './MyQueryPromise'
 import BuildOptionsGroup1Owner from './BuildOptionsGroup1Owner'
-import getTable from './getTable'
+import rowCrud from './rowCrud'
 //
 //  Constants
 //
@@ -27,14 +27,15 @@ export default function GetBuildOptionsGroup1Owner() {
   //
   //  Process promise
   //
-  const getTableparams = {
+  const rowCrudparams = {
+    axiosMethod: 'post',
     sqlCaller: functionName,
     sqlTable: 'group1',
     sqlAction: 'SELECTSQL',
     sqlString:
       'qowner, qgroup1, g1title from questions join group1 on qgroup1 = g1id group by qowner, qgroup1 ,g1title order by qowner, qgroup1'
   }
-  const myPromiseGroup1Owner = MyQueryPromise(getTable(getTableparams))
+  const myPromiseGroup1Owner = MyQueryPromise(rowCrud(rowCrudparams))
   //
   //  Resolve Status
   //

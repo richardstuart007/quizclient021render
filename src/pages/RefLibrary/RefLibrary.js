@@ -31,7 +31,7 @@ import MyActionButton from '../../components/controls/MyActionButton'
 //  Services
 //
 import MyQueryPromise from '../../services/MyQueryPromise'
-import getTable from '../../services/getTable'
+import rowCrud from '../../services/rowCrud'
 import BuildQuizData from '../../services/BuildQuizData'
 //
 //  Debug Settings
@@ -164,13 +164,14 @@ export default function RefLibrary({ handlePage }) {
     //
     //  Process promise
     //
-    const getTableparams = {
+    const rowCrudparams = {
+      axiosMethod: 'post',
       sqlCaller: functionName,
       sqlTable: 'reflinks',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromisereflinks = MyQueryPromise(getTable(getTableparams))
+    const myPromisereflinks = MyQueryPromise(rowCrud(rowCrudparams))
     //
     //  Resolve Status
     //

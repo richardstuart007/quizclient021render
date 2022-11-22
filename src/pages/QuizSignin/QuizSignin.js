@@ -29,7 +29,7 @@ const debugModule = 'QuizSignin'
 //  Initial Values
 //
 const initialFValues = {
-  email: '',
+  user: '',
   password: ''
 }
 //
@@ -40,12 +40,10 @@ let ALLReceived
 export default function QuizSignin({ handlePage }) {
   if (debugFunStart) console.log('QuizSignin')
   //
-  //  Get User
+  //  Get User (Previous, if any)
   //
   const User_Settings_User = JSON.parse(sessionStorage.getItem('User_Settings_User'))
-  if (debugLog) console.log('User_Settings_User ', User_Settings_User)
-  if (User_Settings_User) initialFValues.email = User_Settings_User.u_email
-  if (debugLog) console.log('initialFValues ', initialFValues)
+  if (User_Settings_User) initialFValues.user = User_Settings_User.u_user
   //
   //  Load Data Options
   //
@@ -68,10 +66,10 @@ export default function QuizSignin({ handlePage }) {
     if (debugFunStart) console.log('validate')
     let temp = { ...errors }
     //
-    //  email
+    //  user
     //
-    if ('email' in fieldValues) {
-      temp.email = validateEmail(fieldValues.email) ? '' : 'Email is not a valid format'
+    if ('user' in fieldValues) {
+      temp.user = fieldValues.user.length !== 0 ? '' : 'This field is required.'
     }
     //
     //  password
@@ -87,15 +85,6 @@ export default function QuizSignin({ handlePage }) {
     })
 
     if (fieldValues === values) return Object.values(temp).every(x => x === '')
-  }
-  //...................................................................................
-  function validateEmail(email) {
-    if (debugFunStart) console.log('validateEmail')
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
   }
   //...................................................................................
   //.  Form Submit
@@ -114,27 +103,40 @@ export default function QuizSignin({ handlePage }) {
     //
     //  Deconstruct values
     //
-    const { email, password } = values
+    const { user, password } = values
     setForm_message('Validating')
     //
     //  Process promise
     //
     const params = {
       sqlCaller: debugModule,
-      email: email,
+      user: user,
       password: password
     }
     const myPromiseSignin = MyQueryPromise(checkSignin(params))
     //
     //  Resolve Status
     //
-    myPromiseSignin.then(function (user) {
-      if (debugLog) console.log('user ', user)
-      if (user.u_id) {
+    myPromiseSignin.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  Valid ?
+      //
+      const rtnValue = rtnObj.rtnValue
+      if (debugLog) console.log('rtnValue ', rtnValue)
+      if (rtnValue) {
+        const Usersrow = rtnObj.rtnRows[0]
+        if (debugLog) console.log('Usersrow ', Usersrow)
         setForm_message('Signin being processed')
-        ProcessSignIn(user)
+        ProcessSignIn(Usersrow)
       } else {
-        setForm_message('KEEP TRYING (else REGISTER first)')
+        //
+        //  Error
+        //
+        let message
+        rtnObj.rtnCatch ? (message = rtnObj.rtnCatchMsg) : (message = rtnObj.rtnMessage)
+        if (debugLog) console.log(message)
+        setForm_message(message)
       }
       return
     })
@@ -209,14 +211,7 @@ export default function QuizSignin({ handlePage }) {
             backgroundColor: 'whitesmoke'
           }}
         >
-          <Grid
-            container
-            spacing={1}
-            justify='center'
-            alignItems='center'
-            direction='column'
-            // style={{ minheight: '100vh' }}
-          >
+          <Grid container spacing={1} justify='center' alignItems='center' direction='column'>
             {/*.................................................................................................*/}
             <Grid item xs={12} sx={{ mt: 2 }}>
               <Typography variant='h6' style={{ color: 'blue' }}>
@@ -226,11 +221,11 @@ export default function QuizSignin({ handlePage }) {
             {/*.................................................................................................*/}
             <Grid item xs={12}>
               <MyInput
-                name='email'
-                label='email'
-                value={values.email}
+                name='user'
+                label='Registered user'
+                value={values.user}
                 onChange={handleInputChange}
-                error={errors.email}
+                error={errors.user}
                 sx={{ minWidth: '300px' }}
               />
             </Grid>

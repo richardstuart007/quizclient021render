@@ -7,7 +7,7 @@ import debugSettings from '../debug/debugSettings'
 //
 import MyQueryPromise from './MyQueryPromise'
 import BuildOptionsOwner from './BuildOptionsOwner'
-import getTable from './getTable'
+import rowCrud from './rowCrud'
 //
 //  Constants
 //
@@ -27,14 +27,15 @@ export default function GetBuildOptionsOwner() {
   //
   //  Process promise
   //
-  const getTableparams = {
+  const rowCrudparams = {
+    axiosMethod: 'post',
     sqlCaller: functionName,
     sqlTable: 'owner',
     sqlAction: 'SELECT',
     sqlWhere: '',
     sqlOrderByRaw: 'oowner'
   }
-  const myPromiseOwner = MyQueryPromise(getTable(getTableparams))
+  const myPromiseOwner = MyQueryPromise(rowCrud(rowCrudparams))
   //
   //  Resolve Status
   //

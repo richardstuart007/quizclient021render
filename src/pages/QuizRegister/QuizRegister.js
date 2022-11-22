@@ -41,6 +41,7 @@ const initialFValues = {
   name: '',
   fedid: '',
   fedcountry: 'NZ',
+  user: '',
   email: '',
   password: ''
 }
@@ -68,6 +69,12 @@ function QuizRegister({ handlePage }) {
     //
     if ('name' in fieldValues) {
       temp.name = fieldValues.name.length !== 0 ? '' : 'This field is required.'
+    }
+    //
+    //  user
+    //
+    if ('user' in fieldValues) {
+      temp.user = fieldValues.user.length !== 0 ? '' : 'This field is required.'
     }
     //
     //  email
@@ -115,13 +122,14 @@ function QuizRegister({ handlePage }) {
     //
     //  Deconstruct values
     //
-    const { name, email, password, fedid, fedcountry } = values
+    const { name, user, email, password, fedid, fedcountry } = values
     if (debugLog) console.log('values ', values)
     //
     //  Process promise
     //
     const params = {
       sqlCaller: sqlClient,
+      user: user,
       email: email,
       password: password,
       name: name,
@@ -135,22 +143,36 @@ function QuizRegister({ handlePage }) {
       skipcorrect: true,
       admin: false
     }
-    const myPromiseRegister = MyQueryPromise(registerUser(params, { setForm_message }))
+    const myPromiseRegister = MyQueryPromise(registerUser(params))
     //
     //  Resolve Status
     //
-    myPromiseRegister.then(function (user) {
-      if (debugLog) console.log('user ', user)
-      if (user) {
-        setForm_message(`Data updated in Database with ID(${user.u_id})`)
-        sessionStorage.setItem('User_Settings_User', JSON.stringify(user))
+    myPromiseRegister.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  Valid ?
+      //
+      const rtnValue = rtnObj.rtnValue
+      if (debugLog) console.log('rtnValue ', rtnValue)
+      if (rtnValue) {
+        const Usersrow = rtnObj.rtnRows[0]
+        if (debugLog) console.log('Usersrow ', Usersrow)
+        setForm_message(`Data updated in Database with ID(${Usersrow.u_id})`)
+        sessionStorage.setItem('User_Settings_User', JSON.stringify(Usersrow))
         handlePage('QuizSignin')
+      } else {
+        //
+        //  Error
+        //
+        let message
+        rtnObj.rtnCatch ? (message = rtnObj.rtnCatchMsg) : (message = rtnObj.rtnMessage)
+        if (debugLog) console.log(message)
+        setForm_message(message)
       }
       return
     })
     return myPromiseRegister
   }
-
   //...................................................................................
   //.  Render the form
   //...................................................................................
@@ -179,14 +201,15 @@ function QuizRegister({ handlePage }) {
                 Registration Page
               </Typography>
             </Grid>
+
             {/*.................................................................................................*/}
             <Grid item xs={12}>
               <MyInput
-                name='email'
-                label='email'
-                value={values.email}
+                name='user'
+                label='Registration User'
+                value={values.user}
                 onChange={handleInputChange}
-                error={errors.email}
+                error={errors.user}
                 sx={{ minWidth: '300px' }}
               />
             </Grid>
@@ -202,6 +225,12 @@ function QuizRegister({ handlePage }) {
               />
             </Grid>
             {/*.................................................................................................*/}
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <Typography variant='subtitle2' style={{ color: 'blue' }}>
+                Your Details
+              </Typography>
+            </Grid>
+            {/*.................................................................................................*/}
             <Grid item xs={12}>
               <MyInput
                 name='name'
@@ -209,6 +238,17 @@ function QuizRegister({ handlePage }) {
                 value={values.name}
                 onChange={handleInputChange}
                 error={errors.name}
+                sx={{ minWidth: '300px' }}
+              />
+            </Grid>
+            {/*.................................................................................................*/}
+            <Grid item xs={12}>
+              <MyInput
+                name='email'
+                label='email'
+                value={values.email}
+                onChange={handleInputChange}
+                error={errors.email}
                 sx={{ minWidth: '300px' }}
               />
             </Grid>
@@ -226,7 +266,7 @@ function QuizRegister({ handlePage }) {
             <Grid item xs={12}>
               <MyInput
                 name='fedcountry'
-                label='Country'
+                label='Bridge Rederation Country'
                 value={values.fedcountry}
                 onChange={handleInputChange}
                 error={errors.fedcountry}

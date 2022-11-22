@@ -2,7 +2,7 @@
 //  Remote - Production
 //------------------------------------------------------------------------
 exports.REMOTE_CLIENT = 'REMOTE:9103'
-exports.REMOTE_SERVER = 'REMOTE:Netlify/9101'
+exports.REMOTE_SERVER = 'REMOTE:Render/9101'
 exports.REMOTE_DATABASE = 'REMOTE:Elephant/21'
 exports.REMOTE_SERVERURL = 'https://quizserver021render.onrender.com'
 //------------------------------------------------------------------------

@@ -6,26 +6,31 @@ import debugSettings from '../debug/debugSettings'
 //  Services
 //
 import MyQueryPromise from './MyQueryPromise'
-import rowSelect from './rowSelect'
+import rowCrud from './rowCrud'
 //
 // Debug Settings
 //
 const debugLog = debugSettings()
 const debugFunStart = false
 const debugModule = 'OptionsOwner'
-
 //...................................................................................
 //.  Main Line
 //...................................................................................
 export default function OptionsOwner() {
   if (debugFunStart) console.log(debugModule)
   //
-  //  SQL server
+  //  Process promise
   //
-  const props = {
-    sqlTable: 'owner'
+  const sqlTable = 'owner'
+  const sqlString = `* from ${sqlTable}`
+  const rowCrudparams = {
+    axiosMethod: 'post',
+    sqlCaller: debugModule,
+    sqlTable: sqlTable,
+    sqlAction: 'SELECTSQL',
+    sqlString: sqlString
   }
-  const myPromiseGet = MyQueryPromise(rowSelect(props))
+  const myPromiseGet = MyQueryPromise(rowCrud(rowCrudparams))
   //
   //  Resolve Status
   //
@@ -39,7 +44,6 @@ export default function OptionsOwner() {
     if (data[0]) {
       LoadOptions(data)
     }
-
     return
   })
   //
