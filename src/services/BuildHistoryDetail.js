@@ -47,16 +47,17 @@ export default function BuildHistoryDetail(row) {
     let sqlString = ''
     sqlString =
       sqlString +
-      `r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qcorrect, qbad1, qbad2, qbad3, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds`
+      `r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qcans, qcpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds`
     sqlString = sqlString + ' from usershistory'
     sqlString = sqlString + ' FULL OUTER JOIN questions on qid = ANY (r_qid)'
     sqlString = sqlString + ' FULL OUTER JOIN bidding on bid = qid'
     sqlString = sqlString + ' FULL OUTER JOIN hands on hid = qid'
+    sqlString = sqlString + ' FULL OUTER JOIN qchoices on qcid = qid'
     sqlString = sqlString + ` where r_id = ${row.r_id}`
     sqlString = sqlString + ' group by'
     sqlString =
       sqlString +
-      ' r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qcorrect, qbad1, qbad2, qbad3, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds'
+      ' r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qcans, qcpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds'
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
@@ -84,6 +85,7 @@ export default function BuildHistoryDetail(row) {
       let Data_Questions_Quiz = []
       let Data_Bidding = []
       let Data_Hands = []
+      let Data_Qchoices = []
 
       Data_Hist_Row_Join.forEach(row => {
         const {
@@ -91,10 +93,8 @@ export default function BuildHistoryDetail(row) {
           qowner,
           qkey,
           qdetail,
-          qcorrect,
-          qbad1,
-          qbad2,
-          qbad3,
+          qcans,
+          qcpoints,
           qgroup1,
           brounds,
           hnorth,
@@ -115,10 +115,8 @@ export default function BuildHistoryDetail(row) {
           qowner: qowner,
           qkey: qkey,
           qdetail: qdetail,
-          qcorrect: qcorrect,
-          qbad1: qbad1,
-          qbad2: qbad2,
-          qbad3: qbad3,
+          qcans: qcans,
+          qcpoints: qcpoints,
           qgroup1: qgroup1
         }
         Data_Questions_Quiz.push(rowQuestion)
@@ -145,6 +143,15 @@ export default function BuildHistoryDetail(row) {
           }
           Data_Hands.push(rowHands)
         }
+        //
+        //  Choices
+        //
+        const rowQchoices = {
+          qcid: qid,
+          qcans: qcans,
+          qcpoints: qcpoints
+        }
+        Data_Qchoices.push(rowQchoices)
       })
       //
       //  Completion
@@ -152,6 +159,7 @@ export default function BuildHistoryDetail(row) {
       sessionStorage.setItem('Data_Questions_Quiz', JSON.stringify(Data_Questions_Quiz))
       sessionStorage.setItem('Data_Bidding', JSON.stringify(Data_Bidding))
       sessionStorage.setItem('Data_Hands', JSON.stringify(Data_Hands))
+      sessionStorage.setItem('Data_Qchoices', JSON.stringify(Data_Qchoices))
       sessionStorage.setItem('Data_Hist_Row_Join_Received', true)
     })
 

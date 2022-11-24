@@ -104,8 +104,7 @@ function Quiz({ handlePage }) {
     // Reset Answers
     //
     g_quizAns = []
-    const Data_AnswersJSON = JSON.stringify(g_quizAns)
-    sessionStorage.setItem('Data_Answers', Data_AnswersJSON)
+    sessionStorage.setItem('Data_Answers', JSON.stringify(g_quizAns))
     setAnsPass(0)
     setAnsCount(0)
   }
@@ -126,8 +125,7 @@ function Quiz({ handlePage }) {
     //
     if (debugLog) console.log('g_Idx ', g_Idx, 'id ', id)
     g_quizAns[g_Idx] = id
-    const Data_AnswersJSON = JSON.stringify(g_quizAns)
-    sessionStorage.setItem('Data_Answers', Data_AnswersJSON)
+    sessionStorage.setItem('Data_Answers', JSON.stringify(g_quizAns))
 
     const nextAnsCount = ansCount + 1
     setAnsCount(nextAnsCount)
@@ -165,7 +163,7 @@ function Quiz({ handlePage }) {
       <QuizQuestion quizRow={g_quizRow} quizQuestion={g_Idx + 1} quizTotal={g_questCount} />
       <QuizBidding qid={g_quizRow.qid} />
       <QuizHands qid={g_quizRow.qid} />
-      <QuizPanel key={g_quizRow.qid} quizRow={g_quizRow} handleSelect={handleSelect} />
+      <QuizPanel qid={g_quizRow.qid} handleSelect={handleSelect} />
       {/* .......................................................................................... */}
       {showLinearProgress ? (
         <QuizLinearProgress count={ansCount} total={g_questCount} text={'Progress'} />

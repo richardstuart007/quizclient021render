@@ -17,7 +17,7 @@ const { URL_TABLES } = require('./constants.js')
 //
 // Debug Settings
 //
-const debugLog = debugSettings(true)
+const debugLog = debugSettings()
 //--------------------------------------------------------------------
 //-  Main Line
 //--------------------------------------------------------------------

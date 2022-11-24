@@ -228,7 +228,7 @@ export default function QuizHistoryDetail({ handlePage }) {
       <QuizQuestion quizRow={quizRow} quizQuestion={arrAnsNum[ansIdx] + 1} quizTotal={countAns} />
       <QuizBidding qid={quizRow.qid} />
       <QuizHands qid={quizRow.qid} />
-      <QuizReviewAnswers quizRow={quizRow} AnswerNum={arrAns[ansIdx]} />
+      <QuizReviewAnswers qid={quizRow.qid} AnswerNum={arrAns[ansIdx]} />
 
       <Box sx={{ mt: 2, maxWidth: 600 }}>
         {hideNextButton ? null : (

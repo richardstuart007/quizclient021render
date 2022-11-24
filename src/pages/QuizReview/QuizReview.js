@@ -212,7 +212,7 @@ export default function QuizReview({ handlePage }) {
       )}
       {nothingToReview ? null : <QuizBidding qid={quizRow.qid} />}
       {nothingToReview ? null : <QuizHands qid={quizRow.qid} />}
-      {nothingToReview ? null : <QuizReviewAnswers quizRow={quizRow} AnswerNum={arrAns[ansIdx]} />}
+      {nothingToReview ? null : <QuizReviewAnswers qid={quizRow.qid} AnswerNum={arrAns[ansIdx]} />}
 
       {/* .......................................................................................... */}
       <Box sx={{ mt: 2, maxWidth: 600 }}>
