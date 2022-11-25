@@ -24,7 +24,7 @@ import useMyTable from '../../components/controls/useMyTable'
 //
 //  Services
 //
-import MyQueryPromise from '../../services/MyQueryPromise'
+
 import rowCrud from '../../services/rowCrud'
 //
 //  Debug Settings
@@ -142,7 +142,7 @@ export default function SwitchUser({ handlePage }) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    var myPromiseGet = MyQueryPromise(rowCrud(rowCrudparams))
+    var myPromiseGet = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //

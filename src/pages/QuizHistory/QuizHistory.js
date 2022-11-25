@@ -23,7 +23,7 @@ import MyActionButton from '../../components/controls/MyActionButton'
 //
 //  Services
 //
-import MyQueryPromise from '../../services/MyQueryPromise'
+
 import rowCrud from '../../services/rowCrud'
 import BuildQuizData from '../../services/BuildQuizData'
 import BuildHistoryDetail from '../../services/BuildHistoryDetail'
@@ -233,7 +233,7 @@ export default function QuizHistory({ handlePage }) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseusershistory = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseusershistory = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //

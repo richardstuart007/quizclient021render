@@ -5,7 +5,7 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-import MyQueryPromise from './MyQueryPromise'
+
 import BuildOptionsGroup2 from './BuildOptionsGroup2'
 import rowCrud from './rowCrud'
 //
@@ -35,7 +35,7 @@ export default function GetBuildOptionsGroup2() {
     sqlWhere: '',
     sqlOrderByRaw: 'g2id'
   }
-  const myPromiseGroup2 = MyQueryPromise(rowCrud(rowCrudparams))
+  const myPromiseGroup2 = rowCrud(rowCrudparams)
   //
   //  Resolve Status
   //

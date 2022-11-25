@@ -7,7 +7,7 @@ import { Paper, Grid, Typography } from '@mui/material'
 //  Utilities
 //
 import registerUser from '../../services/registerUser'
-import MyQueryPromise from '../../services/MyQueryPromise'
+
 //
 //  Debug Settings
 //
@@ -143,7 +143,7 @@ function QuizRegister({ handlePage }) {
       skipcorrect: true,
       admin: false
     }
-    const myPromiseRegister = MyQueryPromise(registerUser(params))
+    const myPromiseRegister = registerUser(params)
     //
     //  Resolve Status
     //

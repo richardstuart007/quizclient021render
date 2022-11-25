@@ -5,7 +5,7 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-import MyQueryPromise from './MyQueryPromise'
+
 import rowCrud from './rowCrud'
 import randomSort from './randomSort'
 //
@@ -89,7 +89,7 @@ export default function BuildQuizData(props) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseQuestions = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseQuestions = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
@@ -122,7 +122,6 @@ export default function BuildQuizData(props) {
       //
       LoadServerBidding()
       LoadServerHands()
-      LoadServerChoices()
       LoadServerReflinks()
       return
     })
@@ -217,7 +216,7 @@ export default function BuildQuizData(props) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseBidding = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseBidding = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
@@ -257,7 +256,7 @@ export default function BuildQuizData(props) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseHands = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseHands = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
@@ -268,46 +267,6 @@ export default function BuildQuizData(props) {
       if (debugLog) console.log('Data_Hands ', Data_Hands)
       sessionStorage.setItem('Data_Hands', JSON.stringify(Data_Hands))
       sessionStorage.setItem('Data_Hands_Received', true)
-      //
-      //  All Data Received ?
-      //
-      CheckAllData()
-      return
-    })
-
-    return
-  }
-  //...................................................................................
-  //.  Load Server - Choices
-  //...................................................................................
-  function LoadServerChoices() {
-    if (debugFunStart) console.log('LoadServerChoices')
-    //
-    //  Selection
-    //
-    let sqlString = `* from qchoices where qcid in (${Data_Questions_qidString}) order by qcid`
-    if (debugLog) console.log('sqlString', sqlString)
-    //
-    //  Process promise
-    //
-    const rowCrudparams = {
-      axiosMethod: 'post',
-      sqlCaller: functionName,
-      sqlTable: 'qchoices',
-      sqlAction: 'SELECTSQL',
-      sqlString: sqlString
-    }
-    const myPromiseQchoices = MyQueryPromise(rowCrud(rowCrudparams))
-    //
-    //  Resolve Status
-    //
-    myPromiseQchoices.then(function (Data_Qchoices) {
-      //
-      //  Session Storage
-      //
-      if (debugLog) console.log('Data_Qchoices ', Data_Qchoices)
-      sessionStorage.setItem('Data_Qchoices', JSON.stringify(Data_Qchoices))
-      sessionStorage.setItem('Data_Qchoices_Received', true)
       //
       //  All Data Received ?
       //
@@ -334,7 +293,7 @@ export default function BuildQuizData(props) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseReflinks = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseReflinks = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
@@ -365,7 +324,6 @@ export default function BuildQuizData(props) {
     const Data_Questions_Received = JSON.parse(sessionStorage.getItem('Data_Questions_Received'))
     const Data_Bidding_Received = JSON.parse(sessionStorage.getItem('Data_Bidding_Received'))
     const Data_Hands_Received = JSON.parse(sessionStorage.getItem('Data_Hands_Received'))
-    const Data_Qchoices_Received = JSON.parse(sessionStorage.getItem('Data_Qchoices_Received'))
     const Data_Reflinks_Received = JSON.parse(sessionStorage.getItem('Data_Reflinks_Received'))
     //
     //  All data received
@@ -374,7 +332,6 @@ export default function BuildQuizData(props) {
       Data_Questions_Received &&
       Data_Bidding_Received &&
       Data_Hands_Received &&
-      Data_Qchoices_Received &&
       Data_Reflinks_Received
     ) {
       if (debugLog) console.log('All DATA received')

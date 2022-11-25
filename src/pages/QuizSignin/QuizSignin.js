@@ -8,7 +8,7 @@ import { Paper, Grid, Typography } from '@mui/material'
 //
 import QuizSigninInit from './QuizSigninInit'
 import checkSignin from '../../services/checkSignin'
-import MyQueryPromise from '../../services/MyQueryPromise'
+
 //
 //  Debug Settings
 //
@@ -113,7 +113,7 @@ export default function QuizSignin({ handlePage }) {
       user: user,
       password: password
     }
-    const myPromiseSignin = MyQueryPromise(checkSignin(params))
+    const myPromiseSignin = checkSignin(params)
     //
     //  Resolve Status
     //

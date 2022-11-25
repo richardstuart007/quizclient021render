@@ -28,7 +28,9 @@ import QuizQuestion from '../Common/QuizQuestion'
 // Debug Settings
 //
 const debugLog = debugSettings()
-//===================================================================================
+//...................................................................................
+//.  Main Line
+//...................................................................................
 export default function QuizReview({ handlePage }) {
   if (debugLog) console.log('Start QuizReview')
   //
@@ -50,6 +52,40 @@ export default function QuizReview({ handlePage }) {
   //  Signed in User
   //
   const User_Settings_User = JSON.parse(sessionStorage.getItem('User_Settings_User'))
+  //
+  //  Load the data array from the store
+  //
+  useEffect(() => {
+    firstLoad()
+    // eslint-disable-next-line
+  }, [])
+  //
+  //  Quiz Message
+  //
+  let nothingToReview = false
+  let reviewMessage = `Result (${mark}%) ${countPass} out of ${countAns}.`
+  //
+  //  No Questions to review
+  //
+  if (!quizRow) {
+    nothingToReview = true
+
+    countAns === 0
+      ? (reviewMessage = 'No questions answered, nothing to review')
+      : (reviewMessage = `Result (${mark}%) ${countPass} out of ${countAns}.  WELL DONE!!`)
+  }
+  //
+  //  Hide/Show Previous/Next Buttons
+  //
+  let hidePreviousButton
+  ansIdx + 1 === 1 ? (hidePreviousButton = true) : (hidePreviousButton = false)
+  let hideNextButton
+  ansIdx + 1 === countReview ? (hideNextButton = true) : (hideNextButton = false)
+
+  if (debugLog) console.log('quizRow ', quizRow)
+  if (debugLog) console.log('ansIdx ', ansIdx)
+  if (debugLog) console.log('arrAnsNum ', arrAnsNum)
+  if (debugLog) console.log('arrAns ', arrAns)
   //...................................................................................
   //.  First time data received
   //...................................................................................
@@ -159,43 +195,7 @@ export default function QuizReview({ handlePage }) {
       setQuizRow(arrQuest[QuizIdx])
     }
   }
-  //...................................................................................
-  //.  Main Line
-  //...................................................................................
-  //
-  //  Load the data array from the store
-  //
-  useEffect(() => {
-    firstLoad()
-    // eslint-disable-next-line
-  }, [])
-  //
-  //  Quiz Message
-  //
-  let nothingToReview = false
-  let reviewMessage = `Result (${mark}%) ${countPass} out of ${countAns}.`
-  //
-  //  No Questions to review
-  //
-  if (!quizRow) {
-    nothingToReview = true
 
-    countAns === 0
-      ? (reviewMessage = 'No questions answered, nothing to review')
-      : (reviewMessage = `Result (${mark}%) ${countPass} out of ${countAns}.  WELL DONE!!`)
-  }
-  //
-  //  Hide/Show Previous/Next Buttons
-  //
-  let hidePreviousButton
-  ansIdx + 1 === 1 ? (hidePreviousButton = true) : (hidePreviousButton = false)
-  let hideNextButton
-  ansIdx + 1 === countReview ? (hideNextButton = true) : (hideNextButton = false)
-
-  if (debugLog) console.log('quizRow ', quizRow)
-  if (debugLog) console.log('ansIdx ', ansIdx)
-  if (debugLog) console.log('arrAnsNum ', arrAnsNum)
-  if (debugLog) console.log('arrAns ', arrAns)
   //...................................................................................
   //.  Render the form
   //...................................................................................
@@ -212,7 +212,7 @@ export default function QuizReview({ handlePage }) {
       )}
       {nothingToReview ? null : <QuizBidding qid={quizRow.qid} />}
       {nothingToReview ? null : <QuizHands qid={quizRow.qid} />}
-      {nothingToReview ? null : <QuizReviewAnswers qid={quizRow.qid} AnswerNum={arrAns[ansIdx]} />}
+      {nothingToReview ? null : <QuizReviewAnswers quizRow={quizRow} AnswerNum={arrAns[ansIdx]} />}
 
       {/* .......................................................................................... */}
       <Box sx={{ mt: 2, maxWidth: 600 }}>

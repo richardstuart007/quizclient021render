@@ -30,7 +30,7 @@ import MyActionButton from '../../components/controls/MyActionButton'
 //
 //  Services
 //
-import MyQueryPromise from '../../services/MyQueryPromise'
+
 import rowCrud from '../../services/rowCrud'
 import BuildQuizData from '../../services/BuildQuizData'
 //
@@ -171,7 +171,7 @@ export default function RefLibrary({ handlePage }) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromisereflinks = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromisereflinks = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //

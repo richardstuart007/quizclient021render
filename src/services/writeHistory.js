@@ -2,7 +2,7 @@
 //  Utilities
 //
 import rowCrud from './rowCrud'
-import MyQueryPromise from './MyQueryPromise'
+
 //
 //  Debug Settings
 //
@@ -31,7 +31,6 @@ export default function writeHistory() {
   //
   //  Key
   //
-  const r_email = User_Settings_User.u_email
   const r_uid = User_Settings_User.u_id
   const r_datetime = new Date()
   //
@@ -60,7 +59,6 @@ export default function writeHistory() {
   //  Build row
   //
   const sqlRow = {
-    r_email: r_email,
     r_uid: r_uid,
     r_datetime: r_datetime,
     r_owner: r_owner,
@@ -85,7 +83,7 @@ export default function writeHistory() {
   //  Process promise
   //
   if (debugLog) console.log('rowCrud')
-  const myPromiseInsert = MyQueryPromise(rowCrud(props))
+  const myPromiseInsert = rowCrud(props)
   //
   //  Resolve Status
   //

@@ -5,7 +5,7 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-import MyQueryPromise from './MyQueryPromise'
+
 import rowCrud from './rowCrud'
 //
 // Debug Settings
@@ -30,7 +30,7 @@ export default function OptionsGroup1() {
     sqlAction: 'SELECTSQL',
     sqlString: sqlString
   }
-  const myPromiseGet = MyQueryPromise(rowCrud(rowCrudparams))
+  const myPromiseGet = rowCrud(rowCrudparams)
   //
   //  Resolve Status
   //

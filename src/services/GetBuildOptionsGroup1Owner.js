@@ -5,7 +5,7 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-import MyQueryPromise from './MyQueryPromise'
+
 import BuildOptionsGroup1Owner from './BuildOptionsGroup1Owner'
 import rowCrud from './rowCrud'
 //
@@ -35,7 +35,7 @@ export default function GetBuildOptionsGroup1Owner() {
     sqlString:
       'qowner, qgroup1, g1title from questions join group1 on qgroup1 = g1id group by qowner, qgroup1 ,g1title order by qowner, qgroup1'
   }
-  const myPromiseGroup1Owner = MyQueryPromise(rowCrud(rowCrudparams))
+  const myPromiseGroup1Owner = rowCrud(rowCrudparams)
   //
   //  Resolve Status
   //

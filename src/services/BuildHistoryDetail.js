@@ -5,7 +5,7 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-import MyQueryPromise from './MyQueryPromise'
+
 import rowCrud from './rowCrud'
 //
 //  Constants
@@ -47,17 +47,16 @@ export default function BuildHistoryDetail(row) {
     let sqlString = ''
     sqlString =
       sqlString +
-      `r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qcans, qcpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds`
+      `r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qans, qpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds`
     sqlString = sqlString + ' from usershistory'
     sqlString = sqlString + ' FULL OUTER JOIN questions on qid = ANY (r_qid)'
     sqlString = sqlString + ' FULL OUTER JOIN bidding on bid = qid'
     sqlString = sqlString + ' FULL OUTER JOIN hands on hid = qid'
-    sqlString = sqlString + ' FULL OUTER JOIN qchoices on qcid = qid'
     sqlString = sqlString + ` where r_id = ${row.r_id}`
     sqlString = sqlString + ' group by'
     sqlString =
       sqlString +
-      ' r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qcans, qcpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds'
+      ' r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qans, qpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds'
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
@@ -69,7 +68,7 @@ export default function BuildHistoryDetail(row) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseQuestions = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseQuestions = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
@@ -85,7 +84,6 @@ export default function BuildHistoryDetail(row) {
       let Data_Questions_Quiz = []
       let Data_Bidding = []
       let Data_Hands = []
-      let Data_Qchoices = []
 
       Data_Hist_Row_Join.forEach(row => {
         const {
@@ -93,8 +91,8 @@ export default function BuildHistoryDetail(row) {
           qowner,
           qkey,
           qdetail,
-          qcans,
-          qcpoints,
+          qans,
+          qpoints,
           qgroup1,
           brounds,
           hnorth,
@@ -115,8 +113,8 @@ export default function BuildHistoryDetail(row) {
           qowner: qowner,
           qkey: qkey,
           qdetail: qdetail,
-          qcans: qcans,
-          qcpoints: qcpoints,
+          qans: qans,
+          qpoints: qpoints,
           qgroup1: qgroup1
         }
         Data_Questions_Quiz.push(rowQuestion)
@@ -143,15 +141,6 @@ export default function BuildHistoryDetail(row) {
           }
           Data_Hands.push(rowHands)
         }
-        //
-        //  Choices
-        //
-        const rowQchoices = {
-          qcid: qid,
-          qcans: qcans,
-          qcpoints: qcpoints
-        }
-        Data_Qchoices.push(rowQchoices)
       })
       //
       //  Completion
@@ -159,7 +148,6 @@ export default function BuildHistoryDetail(row) {
       sessionStorage.setItem('Data_Questions_Quiz', JSON.stringify(Data_Questions_Quiz))
       sessionStorage.setItem('Data_Bidding', JSON.stringify(Data_Bidding))
       sessionStorage.setItem('Data_Hands', JSON.stringify(Data_Hands))
-      sessionStorage.setItem('Data_Qchoices', JSON.stringify(Data_Qchoices))
       sessionStorage.setItem('Data_Hist_Row_Join_Received', true)
     })
 
@@ -205,7 +193,7 @@ export default function BuildHistoryDetail(row) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseReflinks = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseReflinks = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //

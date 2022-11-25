@@ -5,7 +5,7 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-import MyQueryPromise from './MyQueryPromise'
+
 import BuildOptionsOwner from './BuildOptionsOwner'
 import rowCrud from './rowCrud'
 //
@@ -35,7 +35,7 @@ export default function GetBuildOptionsOwner() {
     sqlWhere: '',
     sqlOrderByRaw: 'oowner'
   }
-  const myPromiseOwner = MyQueryPromise(rowCrud(rowCrudparams))
+  const myPromiseOwner = rowCrud(rowCrudparams)
   //
   //  Resolve Status
   //

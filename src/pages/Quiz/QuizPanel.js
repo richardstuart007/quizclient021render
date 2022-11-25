@@ -19,23 +19,15 @@ import QuizPanelCard from './QuizPanelCard'
 //
 const debugLog = debugSettings()
 //===================================================================================
-export default function QuizPanel({ qid, handleSelect }) {
+export default function QuizPanel({ quizRow, handleSelect }) {
   if (debugLog) console.log('Start QuizPanel')
-  //
-  //  Get Choices
-  //
-  const Data_Qchoices = JSON.parse(sessionStorage.getItem('Data_Qchoices'))
-  //
-  //  Find the HandsRow for this ID
-  //
-  let row = Data_Qchoices.find(element => element.qcid === qid)
   //
   //  Answers array
   //
   let Answers = []
   let j = 0
-  for (let i = 0; i < row.qcans.length; i++) {
-    let answer = row.qcans[i]
+  for (let i = 0; i < quizRow.qans.length; i++) {
+    let answer = quizRow.qans[i]
     loadAnswers(answer)
   }
   //

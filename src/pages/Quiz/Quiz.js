@@ -163,7 +163,7 @@ function Quiz({ handlePage }) {
       <QuizQuestion quizRow={g_quizRow} quizQuestion={g_Idx + 1} quizTotal={g_questCount} />
       <QuizBidding qid={g_quizRow.qid} />
       <QuizHands qid={g_quizRow.qid} />
-      <QuizPanel qid={g_quizRow.qid} handleSelect={handleSelect} />
+      <QuizPanel quizRow={g_quizRow} handleSelect={handleSelect} />
       {/* .......................................................................................... */}
       {showLinearProgress ? (
         <QuizLinearProgress count={ansCount} total={g_questCount} text={'Progress'} />

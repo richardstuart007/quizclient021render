@@ -18,7 +18,7 @@ import { useMyForm, MyForm } from '../../components/controls/useMyForm'
 //
 //  Services
 //
-import MyQueryPromise from '../../services/MyQueryPromise'
+
 import rowCrud from '../../services/rowCrud'
 //
 //  Form Initial Values
@@ -177,7 +177,7 @@ export default function UsersSettings({ handlePage }) {
       sqlWhere: `u_user = '${data.u_user}'`,
       sqlRow: data
     }
-    const myPromiseUpdate = MyQueryPromise(rowCrud(rowCrudparams))
+    const myPromiseUpdate = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //

@@ -5,7 +5,7 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-import MyQueryPromise from './MyQueryPromise'
+
 import BuildOptionsGroup3 from './BuildOptionsGroup3'
 import rowCrud from './rowCrud'
 //
@@ -35,7 +35,7 @@ export default function GetBuildOptionsGroup3() {
     sqlWhere: '',
     sqlOrderByRaw: 'g3id'
   }
-  const myPromiseGroup3 = MyQueryPromise(rowCrud(rowCrudparams))
+  const myPromiseGroup3 = rowCrud(rowCrudparams)
   //
   //  Resolve Status
   //

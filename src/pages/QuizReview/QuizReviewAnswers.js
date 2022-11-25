@@ -23,22 +23,13 @@ const QuizReviewAnswers = props => {
   //
   // Deconstruct Props
   //
-  const { qid, AnswerNum } = props
-  if (debugLog) console.log('qid ', qid)
+  const { quizRow, AnswerNum } = props
+  if (debugLog) console.log('quizRow ', quizRow)
   if (debugLog) console.log('AnswerNum ', AnswerNum)
-  //
-  //  Get Choices
-  //
-  const Data_Qchoices = JSON.parse(sessionStorage.getItem('Data_Qchoices'))
-  //
-  //  Find the HandsRow for this ID
-  //
-  let row = Data_Qchoices.find(element => element.qcid === qid)
-  if (debugLog) console.log('row ', row)
   //
   //  Load answers to array
   //
-  let Answers = row.qcans
+  let Answers = quizRow.qans
   //
   //  Text - correct/incorrect
   //
