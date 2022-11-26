@@ -98,35 +98,33 @@ export default function App() {
     //  Override LOCAL if Windows port (from package.json)
     //------------------------------------------------------
     const windowport = window.location.port
-    if (windowport) {
-      port = windowport
-      //------------------------------------------------------
-      //  9103 - Local Client --> Remote Server --> Remote Database
-      //------------------------------------------------------
-      if (port === '9103') {
-        w_Client = LOC_REMOTE_REMOTE_CLIENT
-        w_Server = REMOTE_SERVER
-        w_Database = REMOTE_DATABASE
-        w_URL = REMOTE_SERVERURL
-      }
-      //------------------------------------------------------
-      //  9113 - Local Client --> Local Server --> Remote Database
-      //------------------------------------------------------
-      if (port === '9113') {
-        w_Client = LOC_LOC_REMOTE_CLIENT
-        w_Server = LOC_LOC_REMOTE_SERVER
-        w_Database = REMOTE_DATABASE
-        w_URL = LOC_LOC_REMOTE_SERVERURL
-      }
-      //------------------------------------------------------
-      //  8103 - Local Client --> Local Server --> Local Database
-      //------------------------------------------------------
-      if (port === '8103') {
-        w_Client = LOC_LOC_LOC_CLIENT
-        w_Server = LOC_LOC_LOC_SERVER
-        w_Database = LOC_LOC_LOC_DATABASE
-        w_URL = LOC_LOC_LOC_SERVERURL
-      }
+    if (windowport && (windowport === '9113' || windowport === '8103')) port = windowport
+    //------------------------------------------------------
+    //  9103 - Local/Remote Client --> Remote Server --> Remote Database
+    //------------------------------------------------------
+    if (port === '9103') {
+      w_Client = LOC_REMOTE_REMOTE_CLIENT
+      w_Server = REMOTE_SERVER
+      w_Database = REMOTE_DATABASE
+      w_URL = REMOTE_SERVERURL
+    }
+    //------------------------------------------------------
+    //  9113 - Local Client --> Local Server --> Remote Database
+    //------------------------------------------------------
+    if (port === '9113') {
+      w_Client = LOC_LOC_REMOTE_CLIENT
+      w_Server = LOC_LOC_REMOTE_SERVER
+      w_Database = REMOTE_DATABASE
+      w_URL = LOC_LOC_REMOTE_SERVERURL
+    }
+    //------------------------------------------------------
+    //  8103 - Local Client --> Local Server --> Local Database
+    //------------------------------------------------------
+    if (port === '8103') {
+      w_Client = LOC_LOC_LOC_CLIENT
+      w_Server = LOC_LOC_LOC_SERVER
+      w_Database = LOC_LOC_LOC_DATABASE
+      w_URL = LOC_LOC_LOC_SERVERURL
     }
     //
     //  Store Client, Server, Database, URL
