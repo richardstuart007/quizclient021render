@@ -2,16 +2,16 @@
 //  Remote - Production
 //------------------------------------------------------------------------
 //
-//  Remote Client --> Remote Server 1 --> Remote Database 1
+//  Remote/Local Client --> Remote Server 1 --> Remote Database 1
 //
-exports.REM_CLIENT1 = 'REMOTE:13011'
+exports.REM_CLIENT1 = 'LOC/REM:13011'
 exports.REM_SERVER1 = 'REMOTE:Render/11011'
 exports.REM_DATABASE1 = 'REMOTE:Elephant/21'
 exports.REM_SERVERURL1 = 'https://quizserver021render.onrender.com'
 //
-//  Remote Client --> Remote Server 2 --> Remote Database 2
+//  Remote/Local --> Remote Server 2 --> Remote Database 2
 //
-exports.REM_CLIENT2 = 'REMOTE:13022'
+exports.REM_CLIENT2 = 'LOC/REM:13022'
 exports.REM_SERVER2 = 'REMOTE:Render/11022'
 exports.REM_DATABASE2 = 'REMOTE:Elephant/21'
 exports.REM_SERVERURL2 = 'https://quizserver021render.onrender.com'
