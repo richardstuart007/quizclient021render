@@ -137,6 +137,15 @@ export default async function rowCrud(props) {
       const rtnObj = await apiAxios(axiosMethod, URL, body)
       if (debugLog) console.log('rtnObj ', rtnObj)
       //
+      //  Server Returned null
+      //
+      if (!rtnObj) {
+        console.log(
+          `Server rejected request: sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) `
+        )
+        return []
+      }
+      //
       //  Data received
       //
       const rtnValue = rtnObj.rtnValue
@@ -145,7 +154,7 @@ export default async function rowCrud(props) {
         return rtnRows
       }
       //
-      //  No data
+      //  Server returned no data
       //
       console.log(
         `No data received: sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) `
