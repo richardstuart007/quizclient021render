@@ -24,9 +24,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "startlocalremoteremote": "set PORT=9103 && react-scripts start",
-    "startlocallocalremote": "set PORT=9113 && react-scripts start",
-    "startlocal": "set PORT=8103 && react-scripts start",
+    "startremremrem1": "react-scripts start",
+    "startlocremrem1": "set PORT=13011 && react-scripts start",
+    "startlocremrem2": "set PORT=13022 && react-scripts start",
+    "startloclocrem1": "set PORT=13101 && react-scripts start",
+    "startloclocrem2": "set PORT=13202 && react-scripts start",
+    "startloclocloc6": "set PORT=13606 && react-scripts start",
+    "startloclocloc7": "set PORT=13707 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

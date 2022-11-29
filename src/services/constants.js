@@ -1,30 +1,49 @@
 //------------------------------------------------------------------------
 //  Remote - Production
 //------------------------------------------------------------------------
-exports.REMOTE_CLIENT = 'REMOTE:9103'
-exports.REMOTE_SERVER = 'REMOTE:Render/9101'
-exports.REMOTE_DATABASE = 'REMOTE:Elephant/21'
-exports.REMOTE_SERVERURL = 'https://quizserver021render.onrender.com'
+//
+//  Remote Client --> Remote Server 1 --> Remote Database 1
+//
+exports.REM_CLIENT1 = 'REMOTE:13011'
+exports.REM_SERVER1 = 'REMOTE:Render/11011'
+exports.REM_DATABASE1 = 'REMOTE:Elephant/21'
+exports.REM_SERVERURL1 = 'https://quizserver021render.onrender.com'
+//
+//  Remote Client --> Remote Server 2 --> Remote Database 2
+//
+exports.REM_CLIENT2 = 'REMOTE:13022'
+exports.REM_SERVER2 = 'REMOTE:Render/11022'
+exports.REM_DATABASE2 = 'REMOTE:Elephant/21'
+exports.REM_SERVERURL2 = 'https://quizserver021render.onrender.com'
 //------------------------------------------------------------------------
-//  Local - Testing
+//  Local
 //------------------------------------------------------------------------
 //
-//  8103 - Local Client --> Local Server --> Local Database
+//  Local Client --> Local Server --> Local Database 6
 //
-exports.LOC_LOC_LOC_CLIENT = 'LOCAL:8103'
-exports.LOC_LOC_LOC_SERVER = 'LOCAL:8101'
-exports.LOC_LOC_LOC_DATABASE = 'LOCAL/21'
-exports.LOC_LOC_LOC_SERVERURL = 'http://localhost:8101'
+exports.LOC_LOC_LOC_CLIENT6 = 'LOCAL:13606'
+exports.LOC_LOC_LOC_SERVER6 = 'LOCAL:11606'
+exports.LOC_LOC_LOC_DATABASE6 = 'LOCAL:6'
+exports.LOC_LOC_LOC_SERVERURL6 = 'http://localhost:11606'
 //
-//  9113 - Local Client --> Local Server --> Remote Database
+//  Local Client --> Local Server --> Local Database 7
 //
-exports.LOC_LOC_REMOTE_CLIENT = 'LOCAL:9113'
-exports.LOC_LOC_REMOTE_SERVER = 'LOCAL:9101'
-exports.LOC_LOC_REMOTE_SERVERURL = 'http://localhost:9101'
+exports.LOC_LOC_LOC_CLIENT7 = 'LOCAL:13707'
+exports.LOC_LOC_LOC_SERVER7 = 'LOCAL:11707'
+exports.LOC_LOC_LOC_DATABASE7 = 'LOCAL:7'
+exports.LOC_LOC_LOC_SERVERURL7 = 'http://localhost:11707'
 //
-//  9103 - Local Client --> Remote Server --> Remote Database
+//  Local Client --> Local Server 1 --> Remote Database 1
 //
-exports.LOC_REMOTE_REMOTE_CLIENT = 'LOCAL:9103'
+exports.LOC_LOC_REM_CLIENT1 = 'LOCAL:13101'
+exports.LOC_LOC_REM_SERVER1 = 'LOCAL:11101'
+exports.LOC_LOC_REM_SERVERURL1 = 'http://localhost:11101'
+//
+//  Local Client --> Local Server 2 --> Remote Database 2
+//
+exports.LOC_LOC_REM_CLIENT2 = 'LOCAL:13202'
+exports.LOC_LOC_REM_SERVER2 = 'LOCAL:11202'
+exports.LOC_LOC_REM_SERVERURL2 = 'http://localhost:11202'
 //------------------------------------------------------------------------
 //  Server details
 //------------------------------------------------------------------------

@@ -25,30 +25,52 @@ import Layout from '../components/Layout/Layout'
 //  Layout Theme
 //
 const theme = createTheme({})
+//------------------------------------------------------------------------
+//  Remote - Production
+//------------------------------------------------------------------------
 //
-//  Client
+//  Remote Client --> Remote Server 1 --> Remote Database 1
 //
-const { REMOTE_CLIENT } = require('../services/constants.js')
-const { LOC_REMOTE_REMOTE_CLIENT } = require('../services/constants.js')
-const { LOC_LOC_LOC_CLIENT } = require('../services/constants.js')
-const { LOC_LOC_REMOTE_CLIENT } = require('../services/constants.js')
+const { REM_CLIENT1 } = require('../services/constants.js')
+const { REM_SERVER1 } = require('../services/constants.js')
+const { REM_DATABASE1 } = require('../services/constants.js')
+const { REM_SERVERURL1 } = require('../services/constants.js')
 //
-//  Server
+//  Remote Client --> Remote Server 2 --> Remote Database 2
 //
-const { REMOTE_SERVER } = require('../services/constants.js')
-const { LOC_LOC_REMOTE_SERVER } = require('../services/constants.js')
-const { LOC_LOC_LOC_SERVER } = require('../services/constants.js')
+const { REM_CLIENT2 } = require('../services/constants.js')
+const { REM_SERVER2 } = require('../services/constants.js')
+const { REM_DATABASE2 } = require('../services/constants.js')
+const { REM_SERVERURL2 } = require('../services/constants.js')
+//------------------------------------------------------------------------
+//  Local
+//------------------------------------------------------------------------
 //
-//  Database
+//  Local Client --> Local Server --> Local Database 6
 //
-const { REMOTE_DATABASE } = require('../services/constants.js')
-const { LOC_LOC_LOC_DATABASE } = require('../services/constants.js')
+const { LOC_LOC_LOC_CLIENT6 } = require('../services/constants.js')
+const { LOC_LOC_LOC_SERVER6 } = require('../services/constants.js')
+const { LOC_LOC_LOC_DATABASE6 } = require('../services/constants.js')
+const { LOC_LOC_LOC_SERVERURL6 } = require('../services/constants.js')
 //
-//  URL
+//  Local Client --> Local Server --> Local Database 7
 //
-const { REMOTE_SERVERURL } = require('../services/constants.js')
-const { LOC_LOC_REMOTE_SERVERURL } = require('../services/constants.js')
-const { LOC_LOC_LOC_SERVERURL } = require('../services/constants.js')
+const { LOC_LOC_LOC_CLIENT7 } = require('../services/constants.js')
+const { LOC_LOC_LOC_SERVER7 } = require('../services/constants.js')
+const { LOC_LOC_LOC_DATABASE7 } = require('../services/constants.js')
+const { LOC_LOC_LOC_SERVERURL7 } = require('../services/constants.js')
+//
+//  Local Client --> Local Server 1 --> Remote Database 1
+//
+const { LOC_LOC_REM_CLIENT1 } = require('../services/constants.js')
+const { LOC_LOC_REM_SERVER1 } = require('../services/constants.js')
+const { LOC_LOC_REM_SERVERURL1 } = require('../services/constants.js')
+//
+//  Local Client --> Local Server 2 --> Remote Database 2
+//
+const { LOC_LOC_REM_CLIENT2 } = require('../services/constants.js')
+const { LOC_LOC_REM_SERVER2 } = require('../services/constants.js')
+const { LOC_LOC_REM_SERVERURL2 } = require('../services/constants.js')
 //
 // Debug Settings
 //
@@ -57,6 +79,14 @@ const debugLog = debugSettings()
 // Global
 //
 let g_firstTimeFlag = true
+//
+//  Set Defaults for REMOTE setup
+//
+let w_port = '13011'
+let w_Client = REM_CLIENT1
+let w_Database = REM_DATABASE1
+let w_Server = REM_SERVER1
+let w_URL = REM_SERVERURL1
 //----------------------------------------------------------------------------
 //- Main Line
 //----------------------------------------------------------------------------
@@ -86,45 +116,13 @@ export default function App() {
   //.............................................................................
   function firstTime() {
     if (debugLog) console.log(`First Time APP Reset`)
-    //------------------------------------------------------
-    //  Set Defaults for REMOTE setup
-    //------------------------------------------------------
-    let port = '9103'
-    let w_Client = REMOTE_CLIENT
-    let w_Database = REMOTE_DATABASE
-    let w_Server = REMOTE_SERVER
-    let w_URL = REMOTE_SERVERURL
-    //------------------------------------------------------
+    //
     //  Override LOCAL if Windows port (from package.json)
-    //------------------------------------------------------
+    //
     const windowport = window.location.port
-    if (windowport && (windowport === '9113' || windowport === '8103')) port = windowport
-    //------------------------------------------------------
-    //  9103 - Local/Remote Client --> Remote Server --> Remote Database
-    //------------------------------------------------------
-    if (port === '9103') {
-      w_Client = LOC_REMOTE_REMOTE_CLIENT
-      w_Server = REMOTE_SERVER
-      w_Database = REMOTE_DATABASE
-      w_URL = REMOTE_SERVERURL
-    }
-    //------------------------------------------------------
-    //  9113 - Local Client --> Local Server --> Remote Database
-    //------------------------------------------------------
-    if (port === '9113') {
-      w_Client = LOC_LOC_REMOTE_CLIENT
-      w_Server = LOC_LOC_REMOTE_SERVER
-      w_Database = REMOTE_DATABASE
-      w_URL = LOC_LOC_REMOTE_SERVERURL
-    }
-    //------------------------------------------------------
-    //  8103 - Local Client --> Local Server --> Local Database
-    //------------------------------------------------------
-    if (port === '8103') {
-      w_Client = LOC_LOC_LOC_CLIENT
-      w_Server = LOC_LOC_LOC_SERVER
-      w_Database = LOC_LOC_LOC_DATABASE
-      w_URL = LOC_LOC_LOC_SERVERURL
+    if (windowport) {
+      w_port = windowport
+      localport(w_port)
     }
     //
     //  Store Client, Server, Database, URL
@@ -135,15 +133,14 @@ export default function App() {
     sessionStorage.setItem('App_Settings_URL', JSON.stringify(w_URL))
     if (debugLog)
       console.log(
-        `QuizClient-PORT(${port}) CLIENT(${w_Client}) SERVER(${w_Server}) DATABASE(${w_Database}) URL(${w_URL})`
+        `QuizClient-PORT(${w_port}) CLIENT(${w_Client}) SERVER(${w_Server}) DATABASE(${w_Database}) URL(${w_URL})`
       )
     //
-    //  DevMode ?
+    //  DevMode if local client
     //
     let App_Settings_DevMode
-    w_Client === REMOTE_CLIENT ? (App_Settings_DevMode = false) : (App_Settings_DevMode = true)
+    windowport ? (App_Settings_DevMode = true) : (App_Settings_DevMode = false)
     sessionStorage.setItem('App_Settings_DevMode', App_Settings_DevMode)
-
     //
     //  Navigation
     //
@@ -172,17 +169,81 @@ export default function App() {
     sessionStorage.setItem('QuizHistory_Reset', true)
     sessionStorage.setItem('QuizHistory_SearchValue', JSON.stringify(''))
     sessionStorage.setItem('QuizHistory_SearchType', JSON.stringify('g1title'))
-
-    //
-    //  DevMode : Override Initial Values
-    //
-    if (App_Settings_DevMode) {
+  }
+  //.............................................................................
+  //.  Local Port Overridden - Update Constants
+  //.............................................................................
+  function localport(w_port) {
+    switch (w_port) {
+      //------------------------------------------------------
+      //  Client(Local/Remote) --> Remote Server 1 --> Remote Database 1
+      //------------------------------------------------------
+      case '13011':
+        w_Client = REM_CLIENT1
+        w_Server = REM_SERVER1
+        w_Database = REM_DATABASE1
+        w_URL = REM_SERVERURL1
+        break
+      //------------------------------------------------------
+      //  Client(Local/Remote) --> Remote Server 2 --> Remote Database 2
+      //------------------------------------------------------
+      case '13022':
+        w_Client = REM_CLIENT2
+        w_Server = REM_SERVER2
+        w_Database = REM_DATABASE2
+        w_URL = REM_SERVERURL2
+        break
+      //------------------------------------------------------
+      //  Local Client --> Local Server 1 --> Remote Database 1
+      //------------------------------------------------------
+      case '13101':
+        w_Client = LOC_LOC_REM_CLIENT1
+        w_Server = LOC_LOC_REM_SERVER1
+        w_Database = REM_DATABASE1
+        w_URL = LOC_LOC_REM_SERVERURL1
+        break
+      //------------------------------------------------------
+      //  Local Client --> Local Server 2 --> Remote Database 2
+      //------------------------------------------------------
+      case '13202':
+        w_Client = LOC_LOC_REM_CLIENT2
+        w_Server = LOC_LOC_REM_SERVER2
+        w_Database = REM_DATABASE2
+        w_URL = LOC_LOC_REM_SERVERURL2
+        break
+      //------------------------------------------------------
+      //  Local Client --> Local Server --> Local Database 6
+      //------------------------------------------------------
+      case '13606':
+        w_Client = LOC_LOC_LOC_CLIENT6
+        w_Server = LOC_LOC_LOC_SERVER6
+        w_Database = LOC_LOC_LOC_DATABASE6
+        w_URL = LOC_LOC_LOC_SERVERURL6
+        break
+      //------------------------------------------------------
+      //  Local Client --> Local Server --> Local Database 7
+      //------------------------------------------------------
+      case '13707':
+        w_Client = LOC_LOC_LOC_CLIENT7
+        w_Server = LOC_LOC_LOC_SERVER7
+        w_Database = LOC_LOC_LOC_DATABASE7
+        w_URL = LOC_LOC_LOC_SERVERURL7
+        break
+      //------------------------------------------------------
+      //  Error
+      //------------------------------------------------------
+      default:
+        w_Client = 'Error'
+        w_Database = 'Error'
+        w_Server = 'Error'
+        w_URL = 'Error'
+        break
     }
   }
   //.............................................................................
   //.  Handle Page Change
   //.............................................................................
-  const handlePage = nextPage => {
+  function handlePage(nextPage) {
     //
     //  Retrieve the state
     //
