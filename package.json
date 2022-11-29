@@ -1,7 +1,7 @@
 {
   "name": "quizclient021render",
-  "homepage": "http://.",
-  "description": "Quiz Client",
+  "homepage": ".",
+  "description": "Bridge School",
   "version": "1.21.1",
   "private": true,
   "dependencies": {
