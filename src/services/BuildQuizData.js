@@ -5,9 +5,8 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-
-import rowCrud from './rowCrud'
-import randomSort from './randomSort'
+import rowCrud from './../utilities/rowCrud'
+import randomSort from './../utilities/randomSort'
 //
 //  Constants
 //

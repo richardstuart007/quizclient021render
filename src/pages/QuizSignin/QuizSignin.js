@@ -185,13 +185,7 @@ export default function QuizSignin({ handlePage }) {
     ALLReceived = JSON.parse(sessionStorage.getItem('Data_Options_ALL_Received'))
     if (debugFunStart) console.log('ALLReceived ALREADY', ALLReceived)
     if (ALLReceived) return
-    //
-    //  Initialise storage status
-    //
-    sessionStorage.setItem('Data_Options_Owner_Received', false)
-    sessionStorage.setItem('Data_Options_Group1Owner_Received', false)
-    sessionStorage.setItem('Data_Options_Group2_Received', false)
-    sessionStorage.setItem('Data_Options_Group3_Received', false)
+
     //
     //  Get the Selection Options
     //

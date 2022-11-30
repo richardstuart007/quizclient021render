@@ -1,7 +1,7 @@
 //
 //  Utilities
 //
-import apiAxios from './apiAxios'
+import apiAxios from './../utilities/apiAxios'
 //
 //  Debug Settings
 //

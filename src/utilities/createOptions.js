@@ -3,30 +3,32 @@
 //
 import debugSettings from '../debug/debugSettings'
 //
-//  Services
+//  Utilities
 //
-
 import rowCrud from './rowCrud'
 //
 // Debug Settings
 //
-const debugLog = debugSettings()
-const debugFunStart = false
-const debugModule = 'OptionsGroup1'
+const debugLog = debugSettings(true)
+const debugModule = 'createOptions'
 //...................................................................................
 //.  Main Line
 //...................................................................................
-export default function OptionsGroup1() {
-  if (debugFunStart) console.log(debugModule)
+export default function createOptions(props) {
+  const { cop_sqlTable, cop_id, cop_title, cop_store, cop_received } = props
+  if (debugLog) console.log(props)
+  //
+  //  Received flag
+  //
+  sessionStorage.setItem(cop_received, false)
   //
   //  Process promise
   //
-  const sqlTable = 'group1'
-  const sqlString = `* from ${sqlTable}`
+  const sqlString = `* from ${cop_sqlTable}`
   const rowCrudparams = {
     axiosMethod: 'post',
     sqlCaller: debugModule,
-    sqlTable: sqlTable,
+    sqlTable: cop_sqlTable,
     sqlAction: 'SELECTSQL',
     sqlString: sqlString
   }
@@ -35,14 +37,12 @@ export default function OptionsGroup1() {
   //  Resolve Status
   //
   myPromiseGet.then(function (data) {
-    if (debugFunStart) console.log('myPromiseGet')
-    if (debugLog) console.log('myPromiseGet Final fulfilled')
     if (debugLog) console.log('data ', data)
     //
     //  Load Options from Data
     //
     if (data[0]) {
-      LoadOptions(data)
+      LoadOptions(data, cop_id, cop_title, cop_store, cop_received)
     }
     return
   })
@@ -53,25 +53,28 @@ export default function OptionsGroup1() {
   //...................................................................................
   //.  Load Options
   //...................................................................................
-  function LoadOptions(data) {
-    if (debugFunStart) console.log('LoadOptions ')
+  function LoadOptions(data, cop_id, cop_title, cop_store, cop_received) {
     if (debugLog) console.log('Data ', data)
+    if (debugLog) console.log('cop_store ', cop_store)
     //
     //  Options
     //
     let Options = []
     data.forEach(item => {
       const itemObj = {
-        id: item.g1id,
-        title: item.g1title
+        id: item[cop_id],
+        title: item[cop_title]
       }
       Options.push(itemObj)
     })
     //
     //  Store
     //
-    sessionStorage.setItem('Settings_OptionsGroup1', JSON.stringify(Options))
-    if (debugLog) console.log('Options ', Options)
+    sessionStorage.setItem(cop_store, JSON.stringify(Options))
+    //
+    //  Received flag
+    //
+    sessionStorage.setItem(cop_received, true)
   }
   //...................................................................................
 }

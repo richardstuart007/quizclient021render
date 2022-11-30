@@ -1,10 +1,8 @@
 //
 //  Utilities
 //
-import GetBuildOptionsOwner from '../../services/GetBuildOptionsOwner'
-import GetBuildOptionsGroup1Owner from '../../services/GetBuildOptionsGroup1Owner'
-import GetBuildOptionsGroup2 from '../../services/GetBuildOptionsGroup2'
-import GetBuildOptionsGroup3 from '../../services/GetBuildOptionsGroup3'
+import createOptions from '../../utilities/createOptions'
+import OptionsGroup1Owner from '../../services/options/OptionsGroup1Owner'
 //
 //  Debug Settings
 //
@@ -12,7 +10,7 @@ import debugSettings from '../../debug/debugSettings'
 //
 // Debug Settings
 //
-const debugLog = debugSettings()
+const debugLog = debugSettings(true)
 //...................................................................................
 //.  Main Line
 //...................................................................................
@@ -41,10 +39,28 @@ export default function QuizSigninInit() {
   //
   //  Get the Selection Options
   //
-  const Promise_Owner = GetBuildOptionsOwner()
-  const Promise_Group1Owner = GetBuildOptionsGroup1Owner()
-  const Promise_Group2 = GetBuildOptionsGroup2()
-  const Promise_Group3 = GetBuildOptionsGroup3()
+  const Promise_Owner = createOptions({
+    cop_sqlTable: 'owner',
+    cop_id: 'oowner',
+    cop_title: 'otitle',
+    cop_store: 'Data_Options_Owner',
+    cop_received: 'Data_Options_Owner_Received'
+  })
+  const Promise_Group1Owner = OptionsGroup1Owner()
+  const Promise_Group2 = createOptions({
+    cop_sqlTable: 'group2',
+    cop_id: 'g2id',
+    cop_title: 'g2title',
+    cop_store: 'Data_Options_Group2',
+    cop_received: 'Data_Options_Group2_Received'
+  })
+  const Promise_Group3 = createOptions({
+    cop_sqlTable: 'group3',
+    cop_id: 'g3id',
+    cop_title: 'g3title',
+    cop_store: 'Data_Options_Group3',
+    cop_received: 'Data_Options_Group3_Received'
+  })
   //
   //   Wait for all promises
   //

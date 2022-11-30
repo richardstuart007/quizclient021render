@@ -10,7 +10,7 @@ import debugSettings from '../debug/debugSettings'
 // Constants
 //
 const functionName = 'rowCrud'
-const { URL_TABLES } = require('./constants.js')
+const { URL_TABLES } = require('../services/constants.js')
 //..............................................................................
 //.  Initialisation
 //.............................................................................

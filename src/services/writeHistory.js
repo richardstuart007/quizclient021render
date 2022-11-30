@@ -1,7 +1,7 @@
 //
 //  Utilities
 //
-import rowCrud from './rowCrud'
+import rowCrud from './../utilities/rowCrud'
 
 //
 //  Debug Settings
