@@ -233,11 +233,20 @@ export default function QuizHistory({ handlePage }) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseusershistory = rowCrud(rowCrudparams)
+    const myPromiseGet = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
-    myPromiseusershistory.then(function (Data_Hist) {
+    myPromiseGet.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_Hist = rtnObj.rtnRows
       //
       //  Data History add time stamp
       //
@@ -258,15 +267,12 @@ export default function QuizHistory({ handlePage }) {
       //  Filter
       //
       handleSearch()
-      //
-      //  Return
-      //
       return
     })
     //
     //  Return Promise
     //
-    return myPromiseusershistory
+    return myPromiseGet
   }
   //...................................................................................
   //.  Prepare Row before switching to QuizHistoryDetail

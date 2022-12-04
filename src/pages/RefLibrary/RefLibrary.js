@@ -30,7 +30,6 @@ import MyActionButton from '../../components/controls/MyActionButton'
 //
 //  Services
 //
-
 import rowCrud from '../../utilities/rowCrud'
 import BuildQuizData from '../../services/BuildQuizData'
 //
@@ -171,11 +170,20 @@ export default function RefLibrary({ handlePage }) {
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromisereflinks = rowCrud(rowCrudparams)
+    const myPromiseGet = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
-    myPromisereflinks.then(function (Data_RefLibrary) {
+    myPromiseGet.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_RefLibrary = rtnObj.rtnRows
       //
       //  Session Storage
       //
@@ -188,15 +196,12 @@ export default function RefLibrary({ handlePage }) {
       //  Filter
       //
       handleSearch()
-      //
-      //  Return
-      //
       return
     })
     //
     //  Return Promise
     //
-    return myPromisereflinks
+    return myPromiseGet
   }
   //...................................................................................
   //.  Prepare Row before sqitching to Quiz

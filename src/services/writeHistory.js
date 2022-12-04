@@ -87,21 +87,18 @@ export default function writeHistory() {
   //
   //  Resolve Status
   //
-  myPromiseInsert.then(function (data) {
-    if (debugLog) console.log('myPromiseInsert data ', data)
+  myPromiseInsert.then(function (rtnObj) {
+    if (debugLog) console.log('rtnObj ', rtnObj)
     //
     //  No data returned
     //
-    if (!data) {
-      console.log('No Data returned')
-      throw Error
-    } else {
-      //
-      //  Get ID
-      //
-      const rtn_r_id = data[0].r_id
-      if (debugLog) console.log(`Row (${rtn_r_id}) UPSERTED in Database`)
-    }
+    if (!rtnObj.rtnValue) return
+    //
+    //  Data
+    //
+    const data = rtnObj.rtnRows
+    const rtn_r_id = data[0].r_id
+    if (debugLog) console.log(`Row (${rtn_r_id}) UPSERTED in Database`)
     return
   })
   //

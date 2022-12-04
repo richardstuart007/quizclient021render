@@ -11,11 +11,11 @@ import rowCrud from '../../utilities/rowCrud'
 //
 const debugLog = debugSettings()
 const debugFunStart = false
-const debugModule = 'OptionsGroup1'
+const debugModule = 'OptionsGroup1Owner'
 //...................................................................................
 //.  Main Line
 //...................................................................................
-export default function OptionsGroup1() {
+export default function OptionsGroup1Owner() {
   if (debugFunStart) console.log(debugModule)
   //
   //  Received flag
@@ -38,15 +38,17 @@ export default function OptionsGroup1() {
   //
   //  Resolve Status
   //
-  myPromiseGet.then(function (data) {
-    if (debugFunStart) console.log('myPromiseGet')
-    if (debugLog) console.log('data ', data)
+  myPromiseGet.then(function (rtnObj) {
+    if (debugLog) console.log('myPromiseGet rtnObj ', rtnObj)
+    //
+    //  No data returned
+    //
+    if (!rtnObj.rtnValue) return
     //
     //  Load Options from Data
     //
-    if (data[0]) {
-      LoadOptions(data)
-    }
+    const data = rtnObj.rtnRows
+    LoadOptions(data)
     return
   })
   //

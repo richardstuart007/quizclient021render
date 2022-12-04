@@ -9,7 +9,7 @@ import rowCrud from './rowCrud'
 //
 // Debug Settings
 //
-const debugLog = debugSettings(true)
+const debugLog = debugSettings()
 const debugModule = 'createOptions'
 //...................................................................................
 //.  Main Line
@@ -36,14 +36,17 @@ export default function createOptions(props) {
   //
   //  Resolve Status
   //
-  myPromiseGet.then(function (data) {
-    if (debugLog) console.log('data ', data)
+  myPromiseGet.then(function (rtnObj) {
+    if (debugLog) console.log('myPromiseGet rtnObj ', rtnObj)
+    //
+    //  No data returned
+    //
+    if (!rtnObj.rtnValue) return
     //
     //  Load Options from Data
     //
-    if (data[0]) {
-      LoadOptions(data, cop_id, cop_title, cop_store, cop_received)
-    }
+    const data = rtnObj.rtnRows
+    LoadOptions(data, cop_id, cop_title, cop_store, cop_received)
     return
   })
   //
@@ -54,8 +57,6 @@ export default function createOptions(props) {
   //.  Load Options
   //...................................................................................
   function LoadOptions(data, cop_id, cop_title, cop_store, cop_received) {
-    if (debugLog) console.log('Data ', data)
-    if (debugLog) console.log('cop_store ', cop_store)
     //
     //  Options
     //

@@ -92,7 +92,16 @@ export default function BuildQuizData(props) {
     //
     //  Resolve Status
     //
-    myPromiseQuestions.then(function (Data_Questions) {
+    myPromiseQuestions.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_Questions = rtnObj.rtnRows
       //
       //  Session Storage
       //
@@ -219,7 +228,16 @@ export default function BuildQuizData(props) {
     //
     //  Resolve Status
     //
-    myPromiseBidding.then(function (Data_Bidding) {
+    myPromiseBidding.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_Bidding = rtnObj.rtnRows
       //
       //  Session Storage
       //
@@ -259,7 +277,16 @@ export default function BuildQuizData(props) {
     //
     //  Resolve Status
     //
-    myPromiseHands.then(function (Data_Hands) {
+    myPromiseHands.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_Hands = rtnObj.rtnRows
       //
       //  Session Storage
       //
@@ -296,7 +323,16 @@ export default function BuildQuizData(props) {
     //
     //  Resolve Status
     //
-    myPromiseReflinks.then(function (Data_Reflinks) {
+    myPromiseReflinks.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_Reflinks = rtnObj.rtnRows
       //
       //  Session Storage
       //

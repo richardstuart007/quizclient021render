@@ -5,7 +5,6 @@ import debugSettings from '../debug/debugSettings'
 //
 //  Services
 //
-
 import rowCrud from './../utilities/rowCrud'
 //
 //  Constants
@@ -72,7 +71,16 @@ export default function BuildHistoryDetail(row) {
     //
     //  Resolve Status
     //
-    myPromiseQuestions.then(function (Data_Hist_Row_Join) {
+    myPromiseQuestions.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_Hist_Row_Join = rtnObj.rtnRows
       //
       //  Session Storage
       //
@@ -197,7 +205,16 @@ export default function BuildHistoryDetail(row) {
     //
     //  Resolve Status
     //
-    myPromiseReflinks.then(function (Data_Reflinks) {
+    myPromiseReflinks.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const Data_Reflinks = rtnObj.rtnRows
       //
       //  Session Storage
       //

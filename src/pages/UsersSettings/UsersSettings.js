@@ -167,6 +167,11 @@ export default function UsersSettings({ handlePage }) {
     //
     if (debugLog) console.log('updateRowData Row ', data)
     //
+    //  Strip out KEY as it is not updated
+    //
+    let { u_user, ...nokeyData } = data
+    if (debugLog) console.log('Upsert Database nokeyData ', nokeyData)
+    //
     //  Process promise
     //
     const rowCrudparams = {
@@ -174,28 +179,28 @@ export default function UsersSettings({ handlePage }) {
       sqlCaller: debugModule,
       sqlTable: 'users',
       sqlAction: 'UPDATE',
-      sqlWhere: `u_user = '${data.u_user}'`,
-      sqlRow: data
+      sqlWhere: `u_user = '${u_user}'`,
+      sqlRow: nokeyData
     }
     const myPromiseUpdate = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
-    myPromiseUpdate.then(function (data) {
-      if (debugLog) console.log('myPromiseUpdate data ', data)
+    myPromiseUpdate.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
       //
-      //  No data
+      //  No data returned
       //
-      if (!data) {
-        console.log('No Data returned')
-        throw Error
-      } else {
-        //
-        //  Get u_user
-        //
-        const rtn_u_user = data[0].u_user
-        if (debugLog) console.log(`Row (${rtn_u_user}) UPDATED in Database`)
-      }
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const data = rtnObj.rtnRows
+      //
+      //  Get u_user
+      //
+      const rtn_u_user = data[0].u_user
+      if (debugLog) console.log(`Row (${rtn_u_user}) UPDATED in Database`)
       return
     })
     return myPromiseUpdate

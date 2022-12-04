@@ -9,7 +9,7 @@ import debugSettings from '../debug/debugSettings'
 //
 // Constants
 //
-const functionName = 'rowCrud'
+const moduleName = 'rowCrud'
 const { URL_TABLES } = require('../services/constants.js')
 //..............................................................................
 //.  Initialisation
@@ -39,23 +39,54 @@ export default async function rowCrud(props) {
     sqlOrderByRaw
   } = props
   if (debugLog) console.log('props: ', props)
-  let sqlClient = `${functionName}/${sqlCaller}`
+  let sqlClient = `${moduleName}/${sqlCaller}`
+  //
+  //  Object returned by this handler - as per server
+  //
+  let rtnObj = {
+    rtnValue: false,
+    rtnMessage: '',
+    rtnSqlFunction: moduleName,
+    rtnCatchFunction: '',
+    rtnCatch: false,
+    rtnCatchMsg: '',
+    rtnRows: []
+  }
   //
   //  Validate the parameters
   //
   const valid = validateProps()
-  let errMessage = ''
   if (!valid) {
     console.log(
-      `sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) Error(${errMessage})`
+      `sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) Error(${rtnObj.rtnMessage})`
     )
-    return []
+    return rtnObj
   }
   //
   // Fetch the data
   //
-  const rtnRows = sqlDatabase()
-  return rtnRows
+  const rtnObjServer = sqlDatabase()
+  //
+  //  Server Returned null
+  //
+  if (!rtnObjServer) {
+    rtnObj.rtnMessage = `Server rejected request: sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) `
+    console.log(rtnObj.rtnMessage)
+    return rtnObj
+  }
+  //
+  //  Server returned no data
+  //
+  if (!rtnObjServer.rtnValue)
+    if (debugLog)
+      console.log(
+        `No data received: sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) `
+      )
+  //
+  //  Return value from Server
+  //
+  if (debugLog) console.log('Server Object ', rtnObjServer)
+  return rtnObjServer
   //--------------------------------------------------------------------
   //  Validate the parameters
   //--------------------------------------------------------------------
@@ -64,7 +95,7 @@ export default async function rowCrud(props) {
     // Check values sent
     //
     if (!sqlAction) {
-      errMessage = `SqlAction parameter not passed`
+      rtnObj.rtnMessage = `SqlAction parameter not passed`
       return false
     }
     //
@@ -79,21 +110,21 @@ export default async function rowCrud(props) {
       sqlAction !== 'UPDATE' &&
       sqlAction !== 'UPSERT'
     ) {
-      errMessage = `SqlAction ${sqlAction}: SqlAction not valid`
+      rtnObj.rtnMessage = `SqlAction ${sqlAction}: SqlAction not valid`
       return false
     }
     //
     //  SELECTSQL needs sqlString
     //
     if (sqlAction === 'SELECTSQL' && !sqlString) {
-      errMessage = `SqlAction ${sqlAction}: sqlString not passed`
+      rtnObj.rtnMessage = `SqlAction ${sqlAction}: sqlString not passed`
       return false
     }
     //
     //  not SELECTSQL needs table
     //
     if (sqlAction !== 'SELECTSQL' && !sqlTable) {
-      errMessage = `SqlAction ${sqlAction}: sqlTable not passed`
+      rtnObj.rtnMessage = `SqlAction ${sqlAction}: sqlTable not passed`
       return false
     }
     //
@@ -134,32 +165,9 @@ export default async function rowCrud(props) {
       //
       //  SQL database
       //
-      const rtnObj = await apiAxios(axiosMethod, URL, body)
-      if (debugLog) console.log('rtnObj ', rtnObj)
-      //
-      //  Server Returned null
-      //
-      if (!rtnObj) {
-        console.log(
-          `Server rejected request: sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) `
-        )
-        return []
-      }
-      //
-      //  Data received
-      //
-      const rtnValue = rtnObj.rtnValue
-      if (rtnValue) {
-        const rtnRows = rtnObj.rtnRows
-        return rtnRows
-      }
-      //
-      //  Server returned no data
-      //
-      console.log(
-        `No data received: sqlClient(${sqlClient}) Action(${sqlAction}) Table(${sqlTable}) `
-      )
-      return []
+      const rtnObjServer = await apiAxios(axiosMethod, URL, body)
+      if (debugLog) console.log('rtnObjServer ', rtnObjServer)
+      return rtnObjServer
       //
       // Errors
       //

@@ -146,8 +146,16 @@ export default function SwitchUser({ handlePage }) {
     //
     //  Resolve Status
     //
-    myPromiseGet.then(function (data) {
-      if (debugLog) console.log('myPromiseGet data ', data)
+    myPromiseGet.then(function (rtnObj) {
+      if (debugLog) console.log('rtnObj ', rtnObj)
+      //
+      //  No data returned
+      //
+      if (!rtnObj.rtnValue) return
+      //
+      //  Data
+      //
+      const data = rtnObj.rtnRows
       //
       //  Update Table
       //
@@ -160,7 +168,6 @@ export default function SwitchUser({ handlePage }) {
     })
     return myPromiseGet
   }
-
   //.............................................................................
   //  Search/Filter
   //.............................................................................
