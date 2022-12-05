@@ -66,7 +66,7 @@ const headCellsLarge = [
   { id: 'r_id', label: 'ID' },
   { id: 'yymmdd', label: 'Date' },
   { id: 'r_owner', label: 'Owner' },
-  { id: 'g1title', label: 'Group 1' },
+  { id: 'ogtitle', label: 'Group 1' },
   { id: 'r_questions', label: 'Questions' },
   { id: 'r_correct', label: 'Correct' },
   { id: 'r_percent', label: '%' },
@@ -74,7 +74,7 @@ const headCellsLarge = [
   { id: 'quiz', label: 'Quiz', disableSorting: true }
 ]
 const headCellsSmall = [
-  { id: 'g1title', label: 'Group' },
+  { id: 'ogtitle', label: 'Group' },
   { id: 'review', label: 'Review', disableSorting: true },
   { id: 'quiz', label: 'Quiz', disableSorting: true }
 ]
@@ -82,9 +82,9 @@ const searchTypeOptionsLarge = [
   { id: 'r_id', title: 'ID' },
   { id: 'yymmdd', title: 'Date' },
   { id: 'r_owner', title: 'Owner' },
-  { id: 'g1title', title: 'Group' }
+  { id: 'ogtitle', title: 'Group' }
 ]
-const searchTypeOptionsSmall = [{ id: 'g1title', title: 'Group' }]
+const searchTypeOptionsSmall = [{ id: 'ogtitle', title: 'Group' }]
 //
 //  Constants
 //
@@ -121,7 +121,7 @@ export default function QuizHistory({ handlePage }) {
       return items
     }
   })
-  const [searchType, setSearchType] = useState('g1title')
+  const [searchType, setSearchType] = useState('ogtitle')
   const [searchValue, setSearchValue] = useState('')
   const [startPage0, setStartPage0] = useState(false)
   const [allUsersText, setAllUsersText] = useState('ALL')
@@ -217,9 +217,9 @@ export default function QuizHistory({ handlePage }) {
     //
     //  Selection
     //
-    let sqlString = `r_id, r_uid, r_datetime, r_owner, r_group1, g1title, r_qid, r_ans, r_questions, r_correct, 100 * r_correct/r_questions as r_percent`
+    let sqlString = `r_id, r_uid, r_datetime, r_owner, r_group, ogtitle, r_qid, r_ans, r_questions, r_correct, 100 * r_correct/r_questions as r_percent`
     sqlString = sqlString + ` from usershistory`
-    sqlString = sqlString + ` join group1 on r_group1 = g1id`
+    sqlString = sqlString + ` join ownergroup on r_group = oggroup`
     if (!User_Admin) sqlString = sqlString + ` where r_uid='${u_id}'`
     sqlString = sqlString + ` order by r_id desc`
     if (debugLog) console.log('sqlString', sqlString)
@@ -314,7 +314,7 @@ export default function QuizHistory({ handlePage }) {
     //
     //  BuildQuizData
     //
-    const SqlString_Q = `* from questions where qowner = '${row.r_owner}' and qgroup1 = '${row.r_group1}'`
+    const SqlString_Q = `* from questions where qowner = '${row.r_owner}' and qgroup = '${row.r_group}'`
     const params = {
       SqlString_Q: SqlString_Q
     }
@@ -462,9 +462,9 @@ export default function QuizHistory({ handlePage }) {
               x.r_owner.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
-          case 'g1title':
+          case 'ogtitle':
             itemsFilter = userFilter.filter(x =>
-              x.g1title.toLowerCase().includes(searchValue.toLowerCase())
+              x.ogtitle.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
           default:
@@ -569,7 +569,7 @@ export default function QuizHistory({ handlePage }) {
                 {ScreenSmall ? null : <TableCell>{row.r_id}</TableCell>}
                 {ScreenSmall ? null : <TableCell>{row.yymmdd}</TableCell>}
                 {ScreenSmall ? null : <TableCell>{row.r_owner}</TableCell>}
-                <TableCell>{row.g1title}</TableCell>
+                <TableCell>{row.ogtitle}</TableCell>
                 {ScreenSmall ? null : <TableCell>{row.r_questions}</TableCell>}
                 {ScreenSmall ? null : <TableCell>{row.r_correct}</TableCell>}
                 {ScreenSmall ? null : <TableCell>{row.r_percent}</TableCell>}

@@ -74,14 +74,13 @@ export default function QuizNavigation({ handlePage }) {
   //  Show Book Button ?
   //
   let showButton_QuizRefs = false
-  let Data_Reflinks = []
-  const Data_ReflinksJSON = sessionStorage.getItem('Data_Reflinks')
-  if (Data_ReflinksJSON && Data_ReflinksJSON.length > 0)
-    Data_Reflinks = JSON.parse(Data_ReflinksJSON)
+  let Data_Library = []
+  const Data_LibraryJSON = sessionStorage.getItem('Data_Library')
+  if (Data_LibraryJSON && Data_LibraryJSON.length > 0) Data_Library = JSON.parse(Data_LibraryJSON)
   if (
     (PageCurrent === 'QuizReview' || PageCurrent === 'QuizHistoryDetail') &&
-    Data_Reflinks[0] &&
-    Data_Reflinks.length > 0
+    Data_Library[0] &&
+    Data_Library.length > 0
   )
     showButton_QuizRefs = true
   //
@@ -89,7 +88,7 @@ export default function QuizNavigation({ handlePage }) {
   //
   let showButton_UsersSettings
   User_Settings_SignedIn &&
-  (PageCurrent === 'QuizSelect' || PageCurrent === 'QuizHistory' || PageCurrent === 'RefLibrary')
+  (PageCurrent === 'QuizSelect' || PageCurrent === 'QuizHistory' || PageCurrent === 'Library')
     ? (showButton_UsersSettings = true)
     : (showButton_UsersSettings = false)
   //
@@ -104,15 +103,15 @@ export default function QuizNavigation({ handlePage }) {
     ? (showButton_QuizHistory = true)
     : (showButton_QuizHistory = false)
   //
-  //  Show RefLibrary Button ?
+  //  Show Library Button ?
   //
-  let showButton_RefLibrary
+  let showButton_Library
   User_Settings_SignedIn &&
-  PageCurrent !== 'RefLibrary' &&
+  PageCurrent !== 'Library' &&
   PageCurrent !== 'Quiz' &&
   PageCurrent !== 'UsersSettings'
-    ? (showButton_RefLibrary = true)
-    : (showButton_RefLibrary = false)
+    ? (showButton_Library = true)
+    : (showButton_Library = false)
   //
   //  Show SwitchUser Button ?
   //
@@ -133,12 +132,12 @@ export default function QuizNavigation({ handlePage }) {
       <Grid container alignItems='center'>
         {/* .......................................................................................... */}
 
-        {showButton_RefLibrary ? (
+        {showButton_Library ? (
           <MyActionButton
             startIcon={<ScoreboardIcon fontSize='small' />}
             color='warning'
             onClick={() => {
-              handlePage('RefLibrary')
+              handlePage('Library')
             }}
             text='Library'
           ></MyActionButton>

@@ -28,10 +28,10 @@ let QuizSelect_ShowSelectionGroup3
 //  Data output
 //
 let Data_Options_Owner = []
-let Data_Options_Group1Owner = []
+let Data_Options_OwnerGroup = []
 let Data_Options_Group2 = []
 let Data_Options_Group3 = []
-let Data_Group1OptionsSubset = []
+let Data_Options_OwnerGroup_Subset = []
 //
 // Debug Settings
 //
@@ -43,7 +43,7 @@ const debugModule = 'QuizSelect'
 //
 const initialFValues = {
   qowner: '',
-  qgroup1: '',
+  qgroup: '',
   qgroup2: '',
   qgroup3: ''
 }
@@ -68,7 +68,7 @@ export default function QuizSelect({ handlePage }) {
   //  Set Selection from any previous values
   //
   initialFValues.qowner = JSON.parse(sessionStorage.getItem('Quiz_Select_Owner'))
-  initialFValues.qgroup1 = JSON.parse(sessionStorage.getItem('Quiz_Select_Group1'))
+  initialFValues.qgroup = JSON.parse(sessionStorage.getItem('Quiz_Select_OwnerGroup'))
   initialFValues.qgroup2 = JSON.parse(sessionStorage.getItem('Quiz_Select_Group2'))
   initialFValues.qgroup3 = JSON.parse(sessionStorage.getItem('Quiz_Select_Group3'))
   //
@@ -106,13 +106,13 @@ export default function QuizSelect({ handlePage }) {
   function LoadOptions() {
     if (debugFunStart) console.log('LoadOptions')
     //
-    //  Get Data from the Store  Data_Options_Group1Owner
+    //  Get Data from the Store  Data_Options_OwnerGroup
     //
     const Data_Options_OwnerJSON = sessionStorage.getItem('Data_Options_Owner')
     Data_Options_Owner = JSON.parse(Data_Options_OwnerJSON)
 
-    const Data_Options_Group1OwnerJSON = sessionStorage.getItem('Data_Options_Group1Owner')
-    Data_Options_Group1Owner = JSON.parse(Data_Options_Group1OwnerJSON)
+    const Data_Options_OwnerGroupJSON = sessionStorage.getItem('Data_Options_OwnerGroup')
+    Data_Options_OwnerGroup = JSON.parse(Data_Options_OwnerGroupJSON)
 
     const Data_Options_Group2JSON = sessionStorage.getItem('Data_Options_Group2')
     Data_Options_Group2 = JSON.parse(Data_Options_Group2JSON)
@@ -120,61 +120,60 @@ export default function QuizSelect({ handlePage }) {
     const Data_Options_Group3JSON = sessionStorage.getItem('Data_Options_Group3')
     Data_Options_Group3 = JSON.parse(Data_Options_Group3JSON)
     //
-    //  Set Group1 Options
+    //  Set ownergroup Options
     //
-    Data_Group1OptionsSubset = loadGroup1Options(
+    Data_Options_OwnerGroup_Subset = loadOwnerGroupSubset(
       true,
       initialFValues.qowner,
-      initialFValues.qgroup1
+      initialFValues.qgroup
     )
-    sessionStorage.setItem('Data_Group1OptionsSubset', JSON.stringify(Data_Group1OptionsSubset))
+    sessionStorage.setItem(
+      'Data_Options_OwnerGroup_Subset',
+      JSON.stringify(Data_Options_OwnerGroup_Subset)
+    )
   }
-
   //.............................................................................
-  //.  Load Group1 Options
+  //.  Load Owner/Group Options
   //.............................................................................
-  function loadGroup1Options(InitialLoad, owner, group1) {
-    if (debugFunStart) console.log('loadGroup1Options')
-    let options = []
+  function loadOwnerGroupSubset(InitialLoad, owner, group) {
+    if (debugFunStart) console.log('loadOwnerGroupSubset')
+    if (debugLog) console.log('owner ', owner)
+    if (debugLog) console.log('group ', group)
+    if (debugLog) console.log('Data_Options_OwnerGroup ', Data_Options_OwnerGroup)
     //
     //  Select out Owner
     //
-    if (debugLog) console.log('owner ', owner)
-    if (debugLog) console.log('group1 ', group1)
-
-    Data_Options_Group1Owner.forEach(item => {
-      if (item.qowner === owner || owner === 'All') {
-        //
-        //  Do not add duplicates
-        //
-        const duplicate = options.some(option => option['id'] === item.qgroup1)
-        if (!duplicate) {
-          const itemObj = {
-            id: item.qgroup1,
-            title: item.g1title
-          }
-          options.push(itemObj)
+    let options = []
+    Data_Options_OwnerGroup.forEach(item => {
+      if (item.owner === owner) {
+        const itemObj = {
+          id: item.id,
+          title: item.title
         }
+        options.push(itemObj)
       }
     })
     //
-    //  If current group1 is not in valid value, force first
+    //  If current Group is not in valid value, force first
     //
-    if (debugLog) console.log('owner/options ', options)
-    const valid = options.some(option => option['id'] === group1)
+    const valid = options.some(option => option['id'] === group)
+    if (debugLog) console.log(`valid `, valid)
     if (!valid) {
       const firstOption = options[0]
-      if (debugLog) console.log('firstOption ', firstOption)
       if (!InitialLoad) {
         setValues({
           ...values,
           qowner: owner,
-          qgroup1: firstOption.id
+          qgroup: firstOption.id
         })
-        if (debugLog) console.log(`qgroup1 default to ${firstOption.id}`)
+        if (debugLog) console.log(`qgroup default to ${firstOption.id}`)
       }
     }
-
+    //
+    //  Save and return
+    //
+    sessionStorage.setItem('Data_Options_OwnerGroup_Subset', JSON.stringify(options))
+    if (debugLog) console.log('Data_Options_OwnerGroup_Subset ', options)
     return options
   }
   //.............................................................................
@@ -189,14 +188,17 @@ export default function QuizSelect({ handlePage }) {
     //
     if ('qowner' in fieldValues) {
       temp.qowner = fieldValues.qowner.length !== 0 ? '' : 'This field is required.'
-      Data_Group1OptionsSubset = loadGroup1Options(false, fieldValues.qowner, values.qgroup1)
+      Data_Options_OwnerGroup_Subset = loadOwnerGroupSubset(
+        false,
+        fieldValues.qowner,
+        values.qgroup
+      )
     }
     //
-    //  qgroup1
+    //  qgroup
     //
-    if ('qgroup1' in fieldValues) {
-      if (debugLog) console.log('group1 ', fieldValues.qgroup1)
-      temp.qgroup1 = fieldValues.qgroup1.length !== 0 ? '' : 'This field is required.'
+    if ('qgroup' in fieldValues) {
+      temp.qgroup = fieldValues.qgroup.length !== 0 ? '' : 'This field is required.'
     }
     //
     //  Set the errors
@@ -227,8 +229,8 @@ export default function QuizSelect({ handlePage }) {
     //
     //  BuildQuizData
     //
-    const { qowner, qgroup1, qgroup2, qgroup3 } = values
-    let SqlString_Q = `* from questions where qowner = '${qowner}' and qgroup1 = '${qgroup1}'`
+    const { qowner, qgroup, qgroup2, qgroup3 } = values
+    let SqlString_Q = `* from questions where qowner = '${qowner}' and qgroup = '${qgroup}'`
     if (qgroup2 & (qgroup2 !== 'All')) SqlString_Q = SqlString_Q + ` qgroup2 = '${qgroup2}`
     if (qgroup3 & (qgroup3 !== 'All')) SqlString_Q = SqlString_Q + ` qgroup3 = '${qgroup3}`
     const params = {
@@ -328,10 +330,10 @@ export default function QuizSelect({ handlePage }) {
     //
     //  No Refs
     //
-    const Data_ReflinksJSON = sessionStorage.getItem('Data_Reflinks')
-    if (debugLog) console.log('Data_ReflinksJSON ', Data_ReflinksJSON)
+    const Data_LibraryJSON = sessionStorage.getItem('Data_Library')
+    if (debugLog) console.log('Data_LibraryJSON ', Data_LibraryJSON)
     if (handlePageValue === 'QuizRefs') {
-      if (Data_ReflinksJSON === '') {
+      if (Data_LibraryJSON === '') {
         setForm_message('QuizSelect: No Learning Material found')
         return
       }
@@ -379,12 +381,12 @@ export default function QuizSelect({ handlePage }) {
             {/*.................................................................................................*/}
             <Grid item xs={12}>
               <MySelect
-                name='qgroup1'
-                label='Group1'
-                value={values.qgroup1}
+                name='qgroup'
+                label='Group'
+                value={values.qgroup}
                 onChange={handleInputChange}
-                options={Data_Group1OptionsSubset}
-                error={errors.qgroup1}
+                options={Data_Options_OwnerGroup_Subset}
+                error={errors.qgroup}
                 sx={{ minWidth: '300px' }}
               />
             </Grid>

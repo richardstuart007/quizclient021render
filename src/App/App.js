@@ -102,7 +102,7 @@ export default function App() {
   //
   //  Set PageStart
   //
-  let PageStart = 'RefLibrary'
+  let PageStart = 'Library'
   sessionStorage.setItem('Nav_Page_PageStart', JSON.stringify(PageStart))
   //
   //  First Time Setup
@@ -160,7 +160,7 @@ export default function App() {
     //
     sessionStorage.setItem('Quiz_Reset', true)
     sessionStorage.setItem('Quiz_Select_Owner', JSON.stringify(''))
-    sessionStorage.setItem('Quiz_Select_Group1', JSON.stringify(''))
+    sessionStorage.setItem('Quiz_Select_OwnerGroup', JSON.stringify(''))
     sessionStorage.setItem('Quiz_Select_Group2', JSON.stringify('All'))
     sessionStorage.setItem('Quiz_Select_Group3', JSON.stringify('All'))
     //
@@ -168,7 +168,7 @@ export default function App() {
     //
     sessionStorage.setItem('QuizHistory_Reset', true)
     sessionStorage.setItem('QuizHistory_SearchValue', JSON.stringify(''))
-    sessionStorage.setItem('QuizHistory_SearchType', JSON.stringify('g1title'))
+    sessionStorage.setItem('QuizHistory_SearchType', JSON.stringify('ogtitle'))
   }
   //.............................................................................
   //.  Local Port Overridden - Update Constants

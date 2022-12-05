@@ -96,7 +96,7 @@ export default function Layout({ handlePage, pageCurrent, children }) {
     case 'QuizReview':
       title = 'Quiz Review'
       break
-    case 'RefLibrary':
+    case 'Library':
       title = 'Library'
       break
     default:

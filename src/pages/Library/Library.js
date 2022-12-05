@@ -68,45 +68,45 @@ const useStyles = makeStyles(theme => ({
 //  Table Heading
 //
 const headCellsLarge = [
-  { id: 'rid', label: 'ID' },
-  { id: 'rowner', label: 'Owner' },
-  { id: 'rgroup1', label: 'Group' },
-  { id: 'rref', label: 'Reference' },
-  { id: 'rdesc', label: 'Description' },
-  { id: 'rwho', label: 'Who' },
-  { id: 'rtype', label: 'Type' },
+  { id: 'lrid', label: 'ID' },
+  { id: 'lrowner', label: 'Owner' },
+  { id: 'lrgroup', label: 'Group' },
+  { id: 'lrref', label: 'Reference' },
+  { id: 'lrdesc', label: 'Description' },
+  { id: 'lrwho', label: 'Who' },
+  { id: 'lrtype', label: 'Type' },
   { id: 'learn', label: 'Learn', disableSorting: true },
   { id: 'quiz', label: 'Quiz', disableSorting: true }
 ]
 const headCellsSmall = [
-  { id: 'rdesc', label: 'Description' },
+  { id: 'lrdesc', label: 'Description' },
   { id: 'learn', label: 'Learn', disableSorting: true },
   { id: 'quiz', label: 'Quiz', disableSorting: true }
 ]
 const searchTypeOptionsLarge = [
-  { id: 'rid', title: 'ID' },
-  { id: 'rowner', title: 'Owner' },
-  { id: 'rgroup1', title: 'Group' },
-  { id: 'rref', title: 'Reference' },
-  { id: 'rdesc', title: 'Description' },
-  { id: 'rwho', title: 'Who' },
-  { id: 'rtype', title: 'Type' }
+  { id: 'lrid', title: 'ID' },
+  { id: 'lrowner', title: 'Owner' },
+  { id: 'lrgroup', title: 'Group' },
+  { id: 'lrref', title: 'Reference' },
+  { id: 'lrdesc', title: 'Description' },
+  { id: 'lrwho', title: 'Who' },
+  { id: 'lrtype', title: 'Type' }
 ]
-const searchTypeOptionsSmall = [{ id: 'rdesc', title: 'Description' }]
+const searchTypeOptionsSmall = [{ id: 'lrdesc', title: 'Description' }]
 //
 //  Constants
 //
-const functionName = 'RefLibrary'
+const functionName = 'Library'
 //
 // Debug Settings
 //
 const debugLog = debugSettings()
 const debugFunStart = false
-const debugModule = 'RefLibrary'
+const debugModule = 'Library'
 //...................................................................................
 //.  Main Line
 //...................................................................................
-export default function RefLibrary({ handlePage }) {
+export default function Library({ handlePage }) {
   if (debugFunStart) console.log(debugModule)
   //
   //  Styles
@@ -121,7 +121,7 @@ export default function RefLibrary({ handlePage }) {
       return items
     }
   })
-  const [searchType, setSearchType] = useState('rdesc')
+  const [searchType, setSearchType] = useState('lrdesc')
   const [searchValue, setSearchValue] = useState('')
   const [startPage0, setStartPage0] = useState(false)
   const [form_message, setForm_message] = useState('')
@@ -157,8 +157,8 @@ export default function RefLibrary({ handlePage }) {
     //  Selection
     //
     let sqlString = `*`
-    sqlString = sqlString + ` from reflinks`
-    sqlString = sqlString + ` order by rid`
+    sqlString = sqlString + ` from library`
+    sqlString = sqlString + ` order by lrid`
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
@@ -166,7 +166,7 @@ export default function RefLibrary({ handlePage }) {
     const rowCrudparams = {
       axiosMethod: 'post',
       sqlCaller: functionName,
-      sqlTable: 'reflinks',
+      sqlTable: 'library',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
@@ -183,15 +183,15 @@ export default function RefLibrary({ handlePage }) {
       //
       //  Data
       //
-      const Data_RefLibrary = rtnObj.rtnRows
+      const Data_Library = rtnObj.rtnRows
       //
       //  Session Storage
       //
-      sessionStorage.setItem('Data_RefLibrary', JSON.stringify(Data_RefLibrary))
+      sessionStorage.setItem('Data_Library', JSON.stringify(Data_Library))
       //
       //  Update Table
       //
-      setRecords(Data_RefLibrary)
+      setRecords(Data_Library)
       //
       //  Filter
       //
@@ -206,16 +206,16 @@ export default function RefLibrary({ handlePage }) {
   //...................................................................................
   //.  Prepare Row before sqitching to Quiz
   //...................................................................................
-  function RefLibraryRow(row) {
-    if (debugLog) console.log('RefLibraryRow ')
+  function LibraryRow(row) {
+    if (debugLog) console.log('LibraryRow ')
     //
     //  Store Row
     //
-    sessionStorage.setItem('Data_RefLibrary_Row', JSON.stringify(row))
+    sessionStorage.setItem('Data_Library_Row', JSON.stringify(row))
     //
     //  BuildQuizData
     //
-    const SqlString_Q = `* from questions where '${row.rref}' = ANY (qrefs)`
+    const SqlString_Q = `* from questions where '${row.lrref}' = ANY (qrefs)`
     const params = {
       SqlString_Q: SqlString_Q
     }
@@ -331,38 +331,38 @@ export default function RefLibrary({ handlePage }) {
         if (debugLog) console.log('searchValue ', searchValue)
         let itemsFilter = items
         switch (searchType) {
-          case 'rid':
-            itemsFilter = items.filter(x => x.rid === searchValueInt)
+          case 'lrid':
+            itemsFilter = items.filter(x => x.lrid === searchValueInt)
             break
-          case 'rowner':
+          case 'lrowner':
             itemsFilter = items.filter(x =>
-              x.rowner.toLowerCase().includes(searchValue.toLowerCase())
+              x.lrowner.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
-          case 'rgroup1':
+          case 'lrgroup':
             itemsFilter = items.filter(x =>
-              x.rgroup1.toLowerCase().includes(searchValue.toLowerCase())
+              x.lrgroup.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
-          case 'rref':
+          case 'lrref':
             itemsFilter = items.filter(x =>
-              x.rref.toLowerCase().includes(searchValue.toLowerCase())
+              x.lrref.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
-          case 'rdesc':
-            if (debugLog) console.log('rdesc ')
+          case 'lrdesc':
+            if (debugLog) console.log('lrdesc ')
             itemsFilter = items.filter(x =>
-              x.rdesc.toLowerCase().includes(searchValue.toLowerCase())
+              x.lrdesc.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
-          case 'rwho':
+          case 'lrwho':
             itemsFilter = items.filter(x =>
-              x.rwho.toLowerCase().includes(searchValue.toLowerCase())
+              x.lrwho.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
-          case 'rtype':
+          case 'lrtype':
             itemsFilter = items.filter(x =>
-              x.rtype.toLowerCase().includes(searchValue.toLowerCase())
+              x.lrtype.toLowerCase().includes(searchValue.toLowerCase())
             )
             break
           default:
@@ -450,14 +450,14 @@ export default function RefLibrary({ handlePage }) {
           <TblHead />
           <TableBody>
             {recordsAfterPagingAndSorting().map(row => (
-              <TableRow key={row.rid}>
-                {ScreenSmall ? null : <TableCell>{row.rid}</TableCell>}
-                {ScreenSmall ? null : <TableCell>{row.rowner}</TableCell>}
-                {ScreenSmall ? null : <TableCell>{row.rgroup1}</TableCell>}
-                {ScreenSmall ? null : <TableCell>{row.rref}</TableCell>}
-                <TableCell>{row.rdesc}</TableCell>
-                {ScreenSmall ? null : <TableCell>{row.rwho}</TableCell>}
-                {ScreenSmall ? null : <TableCell>{row.rtype}</TableCell>}
+              <TableRow key={row.lrid}>
+                {ScreenSmall ? null : <TableCell>{row.lrid}</TableCell>}
+                {ScreenSmall ? null : <TableCell>{row.lrowner}</TableCell>}
+                {ScreenSmall ? null : <TableCell>{row.lrgroup}</TableCell>}
+                {ScreenSmall ? null : <TableCell>{row.lrref}</TableCell>}
+                <TableCell>{row.lrdesc}</TableCell>
+                {ScreenSmall ? null : <TableCell>{row.lrwho}</TableCell>}
+                {ScreenSmall ? null : <TableCell>{row.lrtype}</TableCell>}
                 <TableCell>
                   <MyActionButton
                     startIcon={<PreviewIcon fontSize='small' />}
@@ -468,13 +468,13 @@ export default function RefLibrary({ handlePage }) {
                 </TableCell>
 
                 <TableCell>
-                  {row.rgroup1 !== 'NOQUIZ' ? (
+                  {row.lrgroup !== 'NOQUIZ' ? (
                     <MyActionButton
                       startIcon={<QuizIcon fontSize='small' />}
                       text={buttonTextQuiz}
                       color='warning'
                       onClick={() => {
-                        RefLibraryRow(row)
+                        LibraryRow(row)
                       }}
                     ></MyActionButton>
                   ) : null}

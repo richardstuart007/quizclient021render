@@ -26,7 +26,7 @@ export default function BuildHistoryDetail(row) {
   //  Load data
   //
   LoadServerQuestions()
-  LoadServerReflinks()
+  LoadServerLibrary()
   //...................................................................................
   //.  Load Server - Questions
   //...................................................................................
@@ -46,7 +46,7 @@ export default function BuildHistoryDetail(row) {
     let sqlString = ''
     sqlString =
       sqlString +
-      `r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qans, qpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds`
+      `r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qans, qpoints, qgroup, qrefs, hnorth, heast, hsouth, hwest, brounds`
     sqlString = sqlString + ' from usershistory'
     sqlString = sqlString + ' FULL OUTER JOIN questions on qid = ANY (r_qid)'
     sqlString = sqlString + ' FULL OUTER JOIN bidding on bid = qid'
@@ -55,7 +55,7 @@ export default function BuildHistoryDetail(row) {
     sqlString = sqlString + ' group by'
     sqlString =
       sqlString +
-      ' r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qans, qpoints, qgroup1, qrefs, hnorth, heast, hsouth, hwest, brounds'
+      ' r_id, r_qid, r_ans, qid, qowner, qkey, qdetail, qans, qpoints, qgroup, qrefs, hnorth, heast, hsouth, hwest, brounds'
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
@@ -101,7 +101,7 @@ export default function BuildHistoryDetail(row) {
           qdetail,
           qans,
           qpoints,
-          qgroup1,
+          qgroup,
           brounds,
           hnorth,
           heast,
@@ -123,7 +123,7 @@ export default function BuildHistoryDetail(row) {
           qdetail: qdetail,
           qans: qans,
           qpoints: qpoints,
-          qgroup1: qgroup1
+          qgroup: qgroup
         }
         Data_Questions_Quiz.push(rowQuestion)
         //
@@ -162,15 +162,15 @@ export default function BuildHistoryDetail(row) {
     return
   }
   //...................................................................................
-  //.  Load Server - Reflinks
+  //.  Load Server - Library
   //...................................................................................
-  function LoadServerReflinks() {
-    if (debugFunStart) console.log('LoadServerReflinks')
+  function LoadServerLibrary() {
+    if (debugFunStart) console.log('LoadServerLibrary')
     //
     //  Initialise
     //
-    sessionStorage.setItem('Data_Reflinks_Received', false)
-    sessionStorage.setItem('Data_Reflinks', [])
+    sessionStorage.setItem('Data_Library_Received', false)
+    sessionStorage.setItem('Data_Library', [])
     //
     //  List of Questions in a string
     //
@@ -185,11 +185,11 @@ export default function BuildHistoryDetail(row) {
     //  Build SqlString
     //
     let sqlString = ''
-    sqlString = sqlString + 'rid, rref, rdesc, rlink, rwho, rtype from reflinks'
-    sqlString = sqlString + ' JOIN questions on rref = ANY (qrefs)'
+    sqlString = sqlString + 'lrid, lrref, lrdesc, lrlink, lrwho, lrtype from library'
+    sqlString = sqlString + ' JOIN questions on lrref = ANY (qrefs)'
     sqlString = sqlString + ` where qid in (${qidList})`
-    sqlString = sqlString + ` group by rid, rref, rdesc, rlink, rwho, rtype`
-    sqlString = sqlString + ` order by rid`
+    sqlString = sqlString + ` group by lrid, lrref, lrdesc, lrlink, lrwho, lrtype`
+    sqlString = sqlString + ` order by lrid`
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
@@ -197,15 +197,15 @@ export default function BuildHistoryDetail(row) {
     const rowCrudparams = {
       axiosMethod: 'post',
       sqlCaller: functionName,
-      sqlTable: 'reflinks',
+      sqlTable: 'library',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseReflinks = rowCrud(rowCrudparams)
+    const myPromiseLibrary = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
-    myPromiseReflinks.then(function (rtnObj) {
+    myPromiseLibrary.then(function (rtnObj) {
       if (debugLog) console.log('rtnObj ', rtnObj)
       //
       //  No data returned
@@ -214,18 +214,18 @@ export default function BuildHistoryDetail(row) {
       //
       //  Data
       //
-      const Data_Reflinks = rtnObj.rtnRows
+      const Data_Library = rtnObj.rtnRows
       //
       //  Session Storage
       //
-      if (debugLog) console.log('Data_Reflinks RESOLVED', Data_Reflinks)
-      sessionStorage.setItem('Data_Reflinks', JSON.stringify(Data_Reflinks))
-      sessionStorage.setItem('Data_Reflinks_Received', true)
+      if (debugLog) console.log('Data_Library RESOLVED', Data_Library)
+      sessionStorage.setItem('Data_Library', JSON.stringify(Data_Library))
+      sessionStorage.setItem('Data_Library_Received', true)
 
       return
     })
 
-    return myPromiseReflinks
+    return myPromiseLibrary
   }
   //...................................................................................
 }

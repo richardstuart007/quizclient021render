@@ -15,7 +15,7 @@ const debugModule = 'createOptions'
 //.  Main Line
 //...................................................................................
 export default function createOptions(props) {
-  const { cop_sqlTable, cop_id, cop_title, cop_store, cop_received } = props
+  const { cop_sqlTable, cop_owner, cop_id, cop_title, cop_store, cop_received } = props
   if (debugLog) console.log(props)
   //
   //  Received flag
@@ -46,7 +46,7 @@ export default function createOptions(props) {
     //  Load Options from Data
     //
     const data = rtnObj.rtnRows
-    LoadOptions(data, cop_id, cop_title, cop_store, cop_received)
+    LoadOptions(data, cop_owner, cop_id, cop_title, cop_store, cop_received)
     return
   })
   //
@@ -56,18 +56,36 @@ export default function createOptions(props) {
   //...................................................................................
   //.  Load Options
   //...................................................................................
-  function LoadOptions(data, cop_id, cop_title, cop_store, cop_received) {
+  function LoadOptions(data, cop_owner, cop_id, cop_title, cop_store, cop_received) {
     //
     //  Options
     //
     let Options = []
-    data.forEach(item => {
-      const itemObj = {
-        id: item[cop_id],
-        title: item[cop_title]
-      }
-      Options.push(itemObj)
-    })
+    //
+    //  No Owner
+    //
+    if (!cop_owner) {
+      data.forEach(item => {
+        const itemObj = {
+          id: item[cop_id],
+          title: item[cop_title]
+        }
+        Options.push(itemObj)
+      })
+    }
+    //
+    //  Owner
+    //
+    else {
+      data.forEach(item => {
+        const itemObj = {
+          owner: item[cop_owner],
+          id: item[cop_id],
+          title: item[cop_title]
+        }
+        Options.push(itemObj)
+      })
+    }
     //
     //  Store
     //

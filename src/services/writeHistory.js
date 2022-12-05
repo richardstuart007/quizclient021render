@@ -37,7 +37,7 @@ export default function writeHistory() {
   //  Selection Data
   //
   const r_owner = JSON.parse(sessionStorage.getItem('Quiz_Select_Owner'))
-  const r_group1 = JSON.parse(sessionStorage.getItem('Quiz_Select_Group1'))
+  const r_group = JSON.parse(sessionStorage.getItem('Quiz_Select_OwnerGroup'))
   //
   //  Correct Answers
   //
@@ -62,7 +62,7 @@ export default function writeHistory() {
     r_uid: r_uid,
     r_datetime: r_datetime,
     r_owner: r_owner,
-    r_group1: r_group1,
+    r_group: r_group,
     r_questions: r_questions,
     r_correct: r_correct,
     r_qid: r_qid,

@@ -52,13 +52,13 @@ export default function BuildQuizData(props) {
   sessionStorage.setItem('Data_Questions_Received', false)
   sessionStorage.setItem('Data_Bidding_Received', false)
   sessionStorage.setItem('Data_Hands_Received', false)
-  sessionStorage.setItem('Data_Reflinks_Received', false)
+  sessionStorage.setItem('Data_Library_Received', false)
   sessionStorage.setItem('BuildQuizData_Received', false)
 
   sessionStorage.setItem('Data_Questions', [])
   sessionStorage.setItem('Data_Bidding', [])
   sessionStorage.setItem('Data_Hands', [])
-  sessionStorage.setItem('Data_Reflinks', [])
+  sessionStorage.setItem('Data_Library', [])
 
   sessionStorage.setItem('Data_Questions_Quiz', [])
   sessionStorage.setItem('Data_Questions_Quiz_Count', 0)
@@ -116,11 +116,11 @@ export default function BuildQuizData(props) {
         return
       }
       //
-      //  Store Owner/group1
+      //  Store Owner/group
       //
       const row1 = Data_Questions[0]
       sessionStorage.setItem('Quiz_Select_Owner', JSON.stringify(row1.qowner))
-      sessionStorage.setItem('Quiz_Select_Group1', JSON.stringify(row1.qgroup1))
+      sessionStorage.setItem('Quiz_Select_OwnerGroup', JSON.stringify(row1.qgroup))
       //
       //  Output Data_Questions_Quiz
       //
@@ -130,7 +130,7 @@ export default function BuildQuizData(props) {
       //
       LoadServerBidding()
       LoadServerHands()
-      LoadServerReflinks()
+      LoadServerLibrary()
       return
     })
 
@@ -303,11 +303,11 @@ export default function BuildQuizData(props) {
     return
   }
   //...................................................................................
-  //.  Load Server - Reflinks
+  //.  Load Server - Library
   //...................................................................................
-  function LoadServerReflinks() {
-    if (debugFunStart) console.log('LoadServerReflinks')
-    let sqlString = `* from reflinks where rref in (${Data_Qrefs_String}) order by rid`
+  function LoadServerLibrary() {
+    if (debugFunStart) console.log('LoadServerLibrary')
+    let sqlString = `* from library where lrref in (${Data_Qrefs_String}) order by lrid`
     if (debugLog) console.log('sqlString', sqlString)
     //
     //  Process promise
@@ -315,15 +315,15 @@ export default function BuildQuizData(props) {
     const rowCrudparams = {
       axiosMethod: 'post',
       sqlCaller: functionName,
-      sqlTable: 'reflinks',
+      sqlTable: 'library',
       sqlAction: 'SELECTSQL',
       sqlString: sqlString
     }
-    const myPromiseReflinks = rowCrud(rowCrudparams)
+    const myPromiseLibrary = rowCrud(rowCrudparams)
     //
     //  Resolve Status
     //
-    myPromiseReflinks.then(function (rtnObj) {
+    myPromiseLibrary.then(function (rtnObj) {
       if (debugLog) console.log('rtnObj ', rtnObj)
       //
       //  No data returned
@@ -332,13 +332,13 @@ export default function BuildQuizData(props) {
       //
       //  Data
       //
-      const Data_Reflinks = rtnObj.rtnRows
+      const Data_Library = rtnObj.rtnRows
       //
       //  Session Storage
       //
-      if (debugLog) console.log('Data_Reflinks ', Data_Reflinks)
-      sessionStorage.setItem('Data_Reflinks', JSON.stringify(Data_Reflinks))
-      sessionStorage.setItem('Data_Reflinks_Received', true)
+      if (debugLog) console.log('Data_Library ', Data_Library)
+      sessionStorage.setItem('Data_Library', JSON.stringify(Data_Library))
+      sessionStorage.setItem('Data_Library_Received', true)
       //
       //  All Data Received ?
       //
@@ -346,7 +346,7 @@ export default function BuildQuizData(props) {
       return
     })
 
-    return myPromiseReflinks
+    return myPromiseLibrary
   }
   //...................................................................................
   //.  All Data Received ?
@@ -359,7 +359,7 @@ export default function BuildQuizData(props) {
     const Data_Questions_Received = JSON.parse(sessionStorage.getItem('Data_Questions_Received'))
     const Data_Bidding_Received = JSON.parse(sessionStorage.getItem('Data_Bidding_Received'))
     const Data_Hands_Received = JSON.parse(sessionStorage.getItem('Data_Hands_Received'))
-    const Data_Reflinks_Received = JSON.parse(sessionStorage.getItem('Data_Reflinks_Received'))
+    const Data_Library_Received = JSON.parse(sessionStorage.getItem('Data_Library_Received'))
     //
     //  All data received
     //
@@ -367,7 +367,7 @@ export default function BuildQuizData(props) {
       Data_Questions_Received &&
       Data_Bidding_Received &&
       Data_Hands_Received &&
-      Data_Reflinks_Received
+      Data_Library_Received
     ) {
       if (debugLog) console.log('All DATA received')
       sessionStorage.setItem('BuildQuizData_Received', true)

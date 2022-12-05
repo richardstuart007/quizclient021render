@@ -15,7 +15,7 @@ import QuizReview from './QuizReview/QuizReview'
 import QuizHistory from './QuizHistory/QuizHistory'
 import QuizHistoryDetail from './QuizHistory/QuizHistoryDetail'
 import QuizRefs from './QuizRefs/QuizRefs'
-import RefLibrary from './RefLibrary/RefLibrary'
+import Library from './Library/Library'
 import SwitchUser from './SwitchUser/SwitchUser'
 //
 // Debug Settings
@@ -50,8 +50,8 @@ function QuizControl({ handlePage }) {
             return <QuizSelect handlePage={handlePage} />
           case 'QuizRefs':
             return <QuizRefs handlePage={handlePage} />
-          case 'RefLibrary':
-            return <RefLibrary handlePage={handlePage} />
+          case 'Library':
+            return <Library handlePage={handlePage} />
           case 'Quiz':
             return <Quiz handlePage={handlePage} />
           case 'QuizReview':

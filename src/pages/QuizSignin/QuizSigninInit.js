@@ -2,7 +2,6 @@
 //  Utilities
 //
 import createOptions from '../../utilities/createOptions'
-import OptionsGroup1Owner from '../../services/options/OptionsGroup1Owner'
 //
 //  Debug Settings
 //
@@ -26,7 +25,7 @@ export default function QuizSigninInit() {
   let sessionStorageItemsALL = 'Data_Options_ALL_Received'
   let sessionStorageItems = []
   sessionStorageItems.push('Data_Options_Owner_Received')
-  sessionStorageItems.push('Data_Options_Group1Owner_Received')
+  sessionStorageItems.push('Data_Options_OwnerGroup_Received')
   sessionStorageItems.push('Data_Options_Group2_Received')
   sessionStorageItems.push('Data_Options_Group3_Received')
   //
@@ -46,7 +45,14 @@ export default function QuizSigninInit() {
     cop_store: 'Data_Options_Owner',
     cop_received: 'Data_Options_Owner_Received'
   })
-  const Promise_Group1Owner = OptionsGroup1Owner()
+  const Promise_OwnerGroup = createOptions({
+    cop_sqlTable: 'ownergroup',
+    cop_owner: 'ogowner',
+    cop_id: 'oggroup',
+    cop_title: 'ogtitle',
+    cop_store: 'Data_Options_OwnerGroup',
+    cop_received: 'Data_Options_OwnerGroup_Received'
+  })
   const Promise_Group2 = createOptions({
     cop_sqlTable: 'group2',
     cop_id: 'g2id',
@@ -64,7 +70,7 @@ export default function QuizSigninInit() {
   //
   //   Wait for all promises
   //
-  Promise.all([Promise_Owner, Promise_Group1Owner, Promise_Group2, Promise_Group3]).then(values => {
+  Promise.all([Promise_Owner, Promise_OwnerGroup, Promise_Group2, Promise_Group3]).then(values => {
     if (debugLog) console.log(`Promise values ALL`, values)
     promisesAllComplete()
   })

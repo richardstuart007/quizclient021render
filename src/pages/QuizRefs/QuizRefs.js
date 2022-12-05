@@ -46,14 +46,14 @@ export default function QuizRefs({ handlePage }) {
   //
   //  Find reference link
   //
-  let Data_Reflinks = []
-  const Data_ReflinksJSON = sessionStorage.getItem('Data_Reflinks')
-  if (Data_ReflinksJSON !== '') Data_Reflinks = JSON.parse(Data_ReflinksJSON)
-  if (debugLog) console.log('Data_Reflinks ', Data_Reflinks)
+  let Data_Library = []
+  const Data_LibraryJSON = sessionStorage.getItem('Data_Library')
+  if (Data_LibraryJSON !== '') Data_Library = JSON.parse(Data_LibraryJSON)
+  if (debugLog) console.log('Data_Library ', Data_Library)
   //
   //  build records from Refs & Links
   //
-  let records = Data_Reflinks
+  let records = Data_Library
   if (debugLog) console.log('records ', records)
   //.............................................................................
   //
