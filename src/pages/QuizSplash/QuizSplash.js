@@ -85,6 +85,13 @@ export default function QuizSplash({ handlePage }) {
               }}
             />
           </Grid>
+          {/*.................................................................................................*/}
+          <Grid item xs={12}>
+            <Typography variant='subtitle2' sx={{ marginTop: '8px', color: 'green' }}>
+              <a href='https://quizclient021renderstatic.onrender.com/'>Old Static Version</a>
+            </Typography>
+          </Grid>
+          {/*.................................................................................................*/}
         </Grid>
       </Paper>
     </>
