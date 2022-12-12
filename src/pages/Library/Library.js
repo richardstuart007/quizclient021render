@@ -463,7 +463,7 @@ export default function Library({ handlePage }) {
                     startIcon={<PreviewIcon fontSize='small' />}
                     text={buttonTextView}
                     color='warning'
-                    onClick={() => openHyperlink(row.rlink)}
+                    onClick={() => openHyperlink(row.lrlink)}
                   ></MyActionButton>
                 </TableCell>
 

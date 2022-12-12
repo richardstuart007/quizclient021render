@@ -102,7 +102,7 @@ export default function QuizRefs({ handlePage }) {
                   startIcon={<PreviewIcon fontSize='small' />}
                   text='View'
                   color='warning'
-                  onClick={() => openHyperlink(row.rlink)}
+                  onClick={() => openHyperlink(row.lrlink)}
                 ></MyActionButton>
               </TableCell>
             </TableRow>
